@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">ToDo App</string>
+    <string name="no_data">No Data</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="search">Search</string>
+    <string name="sort_by">Sort By</string>
+    <string name="high_priority">High priority</string>
+    <string name="low_priority">Low Priority</string>
+    <string name="delete_all">Delete all</string>
+    <string name="add_task">add task</string>
+    <string name="save_task">save task</string>
+    <string name="delete">Delete</string>
+
+
+    <string-array name="priorities">
+        <item>High Priority</item>
+        <item>Medium Priority</item>
+        <item>Low Priority</item>
+    </string-array>
+
 </resources>
