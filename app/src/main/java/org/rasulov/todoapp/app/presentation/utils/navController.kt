@@ -1,4 +1,4 @@
-package org.rasulov.todoapp.utils
+package org.rasulov.todoapp.app.presentation.utils
 
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity

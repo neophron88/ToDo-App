@@ -1,11 +1,11 @@
-package org.rasulov.todoapp.fragments.update
+package org.rasulov.todoapp.app.presentation.fragments.update
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import org.rasulov.todoapp.R
 import org.rasulov.todoapp.databinding.FragmentAddBinding
-import org.rasulov.todoapp.utils.viewBindings
+import org.rasulov.todoapp.app.presentation.utils.viewBindings
 
 
 

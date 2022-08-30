@@ -1,4 +1,4 @@
-package org.rasulov.todoapp.utils
+package org.rasulov.todoapp.app.presentation.utils
 
 import android.util.Log
 import android.view.LayoutInflater

@@ -1,13 +1,13 @@
-package org.rasulov.todoapp
+package org.rasulov.todoapp.app.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
-import org.rasulov.todoapp.utils.viewBindings
+import org.rasulov.todoapp.R
+import org.rasulov.todoapp.app.Singletons
+import org.rasulov.todoapp.app.presentation.utils.viewBindings
 import org.rasulov.todoapp.databinding.ActivityMainBinding
-import org.rasulov.todoapp.utils.navControllers
+import org.rasulov.todoapp.app.presentation.utils.navControllers
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,9 +17,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Singletons.init(applicationContext)
         setContentView(binding.root)
-
         setupActionBarWithNavController(navController)
+
 
     }
 
