@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/custom_input"
+        android:background="@drawable/spinner_shape"
         android:entries="@array/priorities"
         android:paddingStart="15dp"
         android:paddingEnd="15dp" />

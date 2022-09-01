@@ -1,4 +1,4 @@
-package org.rasulov.todoapp.sources.room.api.entities
+package org.rasulov.todoapp.sources.persistence_source.room.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

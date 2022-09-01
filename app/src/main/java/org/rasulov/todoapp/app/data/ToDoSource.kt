@@ -1,12 +1,19 @@
 package org.rasulov.todoapp.app.data
 
 import kotlinx.coroutines.flow.Flow
-import org.rasulov.todoapp.app.domain.entities.Priority
+import org.rasulov.todoapp.app.domain.entities.Settings
 import org.rasulov.todoapp.app.domain.entities.ToDo
+import org.rasulov.todoapp.app.domain.entities.ToDoSearchBy
 
 interface ToDoSource {
 
-    fun getAllTasks(orderBy: Priority): Flow<List<ToDo>>
+    fun getAllToDos(): Flow<List<ToDo>>
 
-    suspend fun insertTask(task: ToDo)
+    suspend fun insertToDo(task: ToDo)
+
+    fun searchToDosBy(searchBy: ToDoSearchBy)
+
+    suspend fun setSettings(settings: Settings)
+
+    fun getSettings(): Flow<Settings>
 }

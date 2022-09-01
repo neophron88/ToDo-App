@@ -6,7 +6,7 @@
     tools:context=".app.presentation.fragments.add.AddFragment">
 
     <include
-        android:id="@+id/to_do_item"
-        layout="@layout/to_do_item" />
+        android:id="@+id/to_do_views"
+        layout="@layout/to_do_views" />
 
 </FrameLayout>

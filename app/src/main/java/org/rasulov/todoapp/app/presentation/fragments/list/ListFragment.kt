@@ -35,16 +35,17 @@ class ListFragment : Fragment(R.layout.fragment_list) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.floatingActionButton.setOnClickListener {
-            viewModel.setSearchBy(Priority.LOW)
+            controller.navigate(R.id.action_listFragment_to_addFragment)
         }
 
         addMenuProvider(R.menu.list_fragment) {
             false
         }
 
+
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.allToDos.collectLatest {
+                viewModel.getAllToDos().collectLatest {
                     Log.d("it0088", "$it")
                 }
             }

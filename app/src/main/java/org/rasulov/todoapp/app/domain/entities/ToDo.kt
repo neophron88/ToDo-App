@@ -9,6 +9,5 @@ data class ToDo(
 ) {
     fun validate() {
         if (title.isBlank()) throw EmptyFieldException()
-        if (description.isBlank()) throw EmptyFieldException()
     }
 }

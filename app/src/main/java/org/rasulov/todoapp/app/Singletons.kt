@@ -2,7 +2,7 @@ package org.rasulov.todoapp.app
 
 import android.content.Context
 import org.rasulov.todoapp.app.data.ToDoRepository
-import org.rasulov.todoapp.sources.room.config.SourceProviderHandler
+import org.rasulov.todoapp.sources.SourceProviderHandler
 
 object Singletons {
 
@@ -13,7 +13,7 @@ object Singletons {
     }
 
     private val roomSourceProvider by lazy {
-        SourceProviderHandler.getRoomSourceProvider(appContext)
+        SourceProviderHandler.getPersistenceSourceProvider(appContext)
     }
 
     val toDoRepository by lazy {
