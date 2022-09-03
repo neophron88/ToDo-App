@@ -20,6 +20,15 @@ class ToDoRepository(
         source.insertToDo(toDo)
     }
 
+    suspend fun updateToDo(toDo: ToDo) {
+        toDo.validate()
+        source.updateToDo(toDo)
+    }
+
+    suspend fun deleteToDo(toDoId: Long) {
+        source.deleteToDo(toDoId)
+    }
+
     fun setSearchBy(searchBy: ToDoSearchBy) {
         source.searchToDosBy(searchBy)
     }
@@ -30,6 +39,10 @@ class ToDoRepository(
 
     fun getSettings(): Flow<Settings> {
         return source.getSettings()
+    }
+
+    suspend fun deleteAllToDos() {
+        source.deleteAllToDos()
     }
 
 

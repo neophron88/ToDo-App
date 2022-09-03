@@ -2,7 +2,10 @@ package org.rasulov.todoapp.sources.persistence_source
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import org.rasulov.todoapp.app.data.ToDoSource
 import org.rasulov.todoapp.app.domain.entities.Settings
 import org.rasulov.todoapp.app.domain.entities.ToDo
@@ -10,6 +13,7 @@ import org.rasulov.todoapp.app.domain.entities.ToDoSearchBy
 import org.rasulov.todoapp.sources.persistence_source.preference.ToDoPrefAccessor
 import org.rasulov.todoapp.sources.persistence_source.room.ToDoDao
 import org.rasulov.todoapp.sources.persistence_source.room.entities.ToDoDBEntity
+import org.rasulov.todoapp.sources.persistence_source.room.entities.ToDoIDTuple
 
 class PersistenceToDoSource(
     private val toDoDao: ToDoDao,
@@ -45,16 +49,22 @@ class PersistenceToDoSource(
     }
 
     override suspend fun insertToDo(task: ToDo) {
-        toDoDao.insertTask(
-            ToDoDBEntity(
-                title = task.title,
-                priority = task.priority.ordinal,
-                description = task.description
-            )
-        )
+        toDoDao.insertTask(ToDoDBEntity.fromToDo(task))
     }
 
-    override  fun searchToDosBy(searchBy: ToDoSearchBy) {
+    override suspend fun updateToDo(task: ToDo) {
+        toDoDao.updateTask(ToDoDBEntity.fromToDo(task))
+    }
+
+    override suspend fun deleteToDo(toDoId: Long) {
+        toDoDao.deleteTask(ToDoIDTuple(toDoId))
+    }
+
+    override suspend fun deleteAllToDos() {
+        toDoDao.deleteAll()
+    }
+
+    override fun searchToDosBy(searchBy: ToDoSearchBy) {
         this.searchBy.value = searchBy
     }
 

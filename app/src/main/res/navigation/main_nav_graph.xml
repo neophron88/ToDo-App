@@ -34,5 +34,9 @@
         android:id="@+id/updateFragment"
         android:name="org.rasulov.todoapp.app.presentation.fragments.update.UpdateFragment"
         android:label="Update"
-        tools:layout="@layout/fragment_update" />
+        tools:layout="@layout/fragment_update" >
+        <argument
+            android:name="item"
+            app:argType="org.rasulov.todoapp.app.presentation.fragments.ToDoParcel" />
+    </fragment>
 </navigation>

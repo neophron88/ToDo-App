@@ -10,13 +10,17 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom" />
 
-    <group android:checkableBehavior="single">
-
+    <group>
         <item
             android:id="@+id/search_by"
             android:title="@string/sort_by"
             app:showAsAction="never">
+
             <menu>
+                <item
+                    android:id="@+id/menu_date_added"
+                    android:title="@string/date_added" />
+
                 <item
                     android:id="@+id/menu_priority_high"
                     android:title="@string/high_priority" />

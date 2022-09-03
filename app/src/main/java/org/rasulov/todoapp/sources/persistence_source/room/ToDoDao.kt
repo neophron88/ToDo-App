@@ -1,20 +1,18 @@
 package org.rasulov.todoapp.sources.persistence_source.room
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import org.rasulov.todoapp.app.domain.entities.Priority
 import org.rasulov.todoapp.sources.persistence_source.room.entities.ToDoDBEntity
+import org.rasulov.todoapp.sources.persistence_source.room.entities.ToDoIDTuple
 
 @Dao
 interface ToDoDao {
 
     @Query(
         "SELECT * FROM todo_table " +
-                "WHERE :searchBy = '' OR title LIKE :searchBy || '%' " +
-                "ORDER BY CASE WHEN :priority = 0 THEN id END ASC, " +
+                "WHERE :searchBy = '' OR title LIKE '%' || :searchBy || '%' " +
+                "ORDER BY " +
+                "CASE WHEN :priority = 0 THEN id END ," +
                 "CASE WHEN :priority = 1 THEN priority END ASC, " +
                 "CASE WHEN :priority = 3 THEN priority END DESC"
     )
@@ -24,6 +22,13 @@ interface ToDoDao {
     @Insert
     suspend fun insertTask(task: ToDoDBEntity)
 
+    @Delete(entity = ToDoDBEntity::class)
+    suspend fun deleteTask(task: ToDoIDTuple)
 
+    @Update
+    suspend fun updateTask(task: ToDoDBEntity)
+
+    @Query("DELETE FROM todo_table")
+    suspend fun deleteAll()
 
 }

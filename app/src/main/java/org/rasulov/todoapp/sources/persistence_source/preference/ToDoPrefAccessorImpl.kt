@@ -1,6 +1,7 @@
 package org.rasulov.todoapp.sources.persistence_source.preference
 
 import android.content.SharedPreferences
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
@@ -10,7 +11,7 @@ import org.rasulov.todoapp.app.domain.entities.Settings
 import java.security.Key
 
 
-class ToDoPrefAccessorImpl(private val preferences: SharedPreferences):ToDoPrefAccessor {
+class ToDoPrefAccessorImpl(private val preferences: SharedPreferences) : ToDoPrefAccessor {
 
     private val settingsFlow = MutableSharedFlow<Unit>(
         1,
@@ -27,6 +28,7 @@ class ToDoPrefAccessorImpl(private val preferences: SharedPreferences):ToDoPrefA
     }
 
     private fun obtainSettings(): Settings {
+        Log.d("it0088", "obtainSettings: ")
         val ordinal = preferences.getInt(KEY, Priority.NONE.ordinal)
         return Settings(
             Priority.values()[ordinal]

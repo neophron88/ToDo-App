@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'androidx.navigation.safeargs'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+
 }
 
 android {
@@ -76,5 +78,5 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.0-alpha01"
 
 
-
+    implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
 }

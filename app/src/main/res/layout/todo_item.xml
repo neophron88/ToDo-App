@@ -5,16 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="8dp"
+    app:cardElevation="2dp"
     app:cardUseCompatPadding="true"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp">
+        android:layout_margin="6dp">
 
         <TextView
             android:id="@+id/title"
@@ -22,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:maxLines="1"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/darkGray"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:maxLines="15"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:textColor="@color/darkGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,8 +43,10 @@
             tools:text="Description helo heoleheheheheheheheheheheheheheheheheheheheheh" />
 
         <View
-            android:layout_width="23dp"
-            android:layout_height="23dp"
+            android:id="@+id/priority_indicator"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="4dp"
             android:background="@drawable/circle_shape"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

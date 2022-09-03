@@ -11,6 +11,8 @@
     <string name="add_task">add task</string>
     <string name="save_task">save task</string>
     <string name="delete">Delete</string>
+    <string name="undo">Undo</string>
+    <string name="date_added">Date added</string>
 
 
     //Keep the order like Priority class order

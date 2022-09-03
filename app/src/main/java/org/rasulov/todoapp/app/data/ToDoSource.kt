@@ -11,9 +11,16 @@ interface ToDoSource {
 
     suspend fun insertToDo(task: ToDo)
 
+    suspend fun updateToDo(task: ToDo)
+
+    suspend fun deleteToDo(toDoId: Long)
+
+    suspend fun deleteAllToDos()
+
     fun searchToDosBy(searchBy: ToDoSearchBy)
 
     suspend fun setSettings(settings: Settings)
 
     fun getSettings(): Flow<Settings>
+
 }

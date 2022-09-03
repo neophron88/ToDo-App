@@ -14,9 +14,20 @@ data class ToDoDBEntity(
 ) {
 
     fun toToDo() = ToDo(
+        id,
         title,
         Priority.values()[priority],
         description
     )
+
+
+    companion object {
+        fun fromToDo(todo: ToDo) = ToDoDBEntity(
+            id = todo.id,
+            title = todo.title,
+            priority = todo.priority.ordinal,
+            description = todo.description
+        )
+    }
 
 }
