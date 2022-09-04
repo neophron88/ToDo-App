@@ -1,4 +1,4 @@
-package org.rasulov.todoapp.app.presentation.utils
+package org.rasulov.androidx.fragment
 
 import android.graphics.drawable.GradientDrawable
 import android.view.Menu

@@ -1,6 +1,6 @@
 package org.rasulov.todoapp.app.domain.entities
 
-import org.rasulov.todoapp.app.domain.exceptions.EmptyFieldException
+import org.rasulov.todoapp.app.data.EmptyFieldException
 
 data class ToDo(
     val id: Long,

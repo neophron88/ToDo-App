@@ -1,4 +1,4 @@
-package org.rasulov.todoapp.app.presentation.fragments.list.recyclerView_configs
+package org.rasulov.todoapp.app.presentation.fragments.list.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import org.rasulov.todoapp.app.domain.entities.ToDo

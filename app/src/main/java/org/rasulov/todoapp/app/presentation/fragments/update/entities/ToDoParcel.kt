@@ -1,4 +1,4 @@
-package org.rasulov.todoapp.app.presentation.fragments
+package org.rasulov.todoapp.app.presentation.fragments.update.entities
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

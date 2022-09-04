@@ -1,7 +1,7 @@
 package org.rasulov.todoapp.app
 
 import android.content.Context
-import org.rasulov.todoapp.app.data.ToDoRepository
+import org.rasulov.todoapp.app.data.todo.ToDoRepository
 import org.rasulov.todoapp.sources.SourceProviderHandler
 
 object Singletons {

@@ -37,6 +37,6 @@
         tools:layout="@layout/fragment_update" >
         <argument
             android:name="item"
-            app:argType="org.rasulov.todoapp.app.presentation.fragments.ToDoParcel" />
+            app:argType="org.rasulov.todoapp.app.presentation.fragments.update.entities.ToDoParcel" />
     </fragment>
 </navigation>

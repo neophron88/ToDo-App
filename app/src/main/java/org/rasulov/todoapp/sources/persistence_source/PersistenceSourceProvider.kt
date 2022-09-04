@@ -1,7 +1,6 @@
 package org.rasulov.todoapp.sources.persistence_source
 
-import android.content.SharedPreferences
-import org.rasulov.todoapp.app.data.ToDoSource
+import org.rasulov.todoapp.app.data.todo.ToDoSource
 import org.rasulov.todoapp.sources.persistence_source.preference.ToDoPreference
 import org.rasulov.todoapp.sources.persistence_source.room.ToDoDatabase
 

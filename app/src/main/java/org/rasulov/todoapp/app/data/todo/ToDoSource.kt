@@ -1,4 +1,4 @@
-package org.rasulov.todoapp.app.data
+package org.rasulov.todoapp.app.data.todo
 
 import kotlinx.coroutines.flow.Flow
 import org.rasulov.todoapp.app.domain.entities.Settings

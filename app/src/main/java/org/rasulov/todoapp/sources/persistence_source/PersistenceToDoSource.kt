@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import org.rasulov.todoapp.app.data.ToDoSource
+import org.rasulov.todoapp.app.data.todo.ToDoSource
 import org.rasulov.todoapp.app.domain.entities.Settings
 import org.rasulov.todoapp.app.domain.entities.ToDo
 import org.rasulov.todoapp.app.domain.entities.ToDoSearchBy
@@ -40,12 +40,10 @@ class PersistenceToDoSource(
         val searchBy = findBy.searchBy
         val settings = findBy.settings
 
-        return toDoDao.getAllTasks(
-            searchBy.title,
-            settings.priority.ordinal
-        ).map {
-            it.map { todoDb -> todoDb.toToDo() }
-        }
+        return toDoDao.getAllTasks(searchBy.title, settings.priority.ordinal)
+            .map {
+                it.map { todoDb -> todoDb.toToDo() }
+            }
     }
 
     override suspend fun insertToDo(task: ToDo) {

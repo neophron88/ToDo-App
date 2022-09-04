@@ -3,8 +3,12 @@ package org.rasulov.todoapp.app.presentation.fragments.add
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import org.rasulov.androidx.fragment.addMenuProvider
+import org.rasulov.androidx.fragment.getGradientDrawable
+import org.rasulov.androidx.fragment.viewBindings
 import org.rasulov.todoapp.R
 import org.rasulov.todoapp.app.Singletons
 import org.rasulov.todoapp.app.domain.entities.Priority
@@ -15,6 +19,10 @@ import org.rasulov.todoapp.databinding.FragmentAddBinding
 
 class AddFragment : Fragment(R.layout.fragment_add) {
 
+    private val viewModel by viewModel {
+        AddViewModel(Singletons.toDoRepository)
+    }
+
     private val binding: FragmentAddBinding by viewBindings()
 
     private val controller by lazy { findNavController() }
@@ -23,32 +31,27 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         requireContext().getColorsFromRes(R.array.colors)
     }
 
-    private val viewModel by viewModel {
-        AddViewModel(Singletons.toDoRepository)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        addMenuProvider(
-            menuRes = R.menu.add_fragment,
+        addMenuProvider()
 
-            onMenuItemSelected = {
-                when (it.itemId) {
-                    R.id.menu_add -> viewModel.addToDo(getToDo())
-                }
-                controller.popBackStack()
-            }
-        )
+        setSpinnerOnItemSelected()
 
-        binding.toDoViews.spinnerPriority.setOnItemSelectedListener { item, position ->
-            val drawable = getGradientDrawable(R.drawable.spinner_shape)
-            drawable.setStroke((2).dpToPixel(requireContext()), colors[position])
-            (item as? TextView)?.setTextColor(colors[position])
-            binding.toDoViews.spinnerPriority.background = drawable
-
-        }
+        observeUiEvent()
     }
+
+
+    private fun addMenuProvider() = addMenuProvider(
+        menuRes = R.menu.add_fragment,
+        onMenuItemSelected = {
+            when (it.itemId) {
+                R.id.menu_add -> viewModel.addToDo(getToDo())
+                android.R.id.home -> controller.popBackStack()
+            }
+        }
+    )
 
     private fun getToDo(): ToDo {
         binding.toDoViews.apply {
@@ -57,6 +60,33 @@ class AddFragment : Fragment(R.layout.fragment_add) {
             val description = edtDescription.text.toString()
             return ToDo(ToDo.DEFAULT, title, priority, description)
         }
+    }
 
+
+    private fun setSpinnerOnItemSelected() {
+        binding.toDoViews.spinnerPriority.setOnItemSelectedListener { item, position ->
+            val drawable = getGradientDrawable(R.drawable.spinner_shape)
+            drawable.setStroke((2).dpToPixel(requireContext()), colors[position])
+            (item as? TextView)?.setTextColor(colors[position])
+            binding.toDoViews.spinnerPriority.background = drawable
+        }
+    }
+
+
+    private fun observeUiEvent() {
+        viewModel.uiEvent.observe(viewLifecycleOwner) {
+            when (it) {
+                EmptyFieldUIEvent -> showToast()
+                OperationSuccessUIEvent -> controller.popBackStack()
+            }
+        }
+    }
+
+    private fun showToast() {
+        Toast.makeText(
+            requireContext().applicationContext,
+            "The Title field is empty",
+            Toast.LENGTH_LONG
+        ).show()
     }
 }

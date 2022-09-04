@@ -28,7 +28,6 @@ class ToDoPrefAccessorImpl(private val preferences: SharedPreferences) : ToDoPre
     }
 
     private fun obtainSettings(): Settings {
-        Log.d("it0088", "obtainSettings: ")
         val ordinal = preferences.getInt(KEY, Priority.NONE.ordinal)
         return Settings(
             Priority.values()[ordinal]

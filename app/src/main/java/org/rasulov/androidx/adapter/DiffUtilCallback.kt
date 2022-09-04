@@ -1,4 +1,4 @@
-package org.rasulov.todoapp.app.presentation.fragments.list.recyclerView_configs.advanced_adapter
+package org.rasulov.androidx.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 

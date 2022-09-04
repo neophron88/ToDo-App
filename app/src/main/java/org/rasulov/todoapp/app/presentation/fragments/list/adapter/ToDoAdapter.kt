@@ -1,4 +1,4 @@
-package org.rasulov.todoapp.app.presentation.fragments.list.recyclerView_configs
+package org.rasulov.todoapp.app.presentation.fragments.list.adapter
 
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.rasulov.todoapp.R
 import org.rasulov.todoapp.app.domain.entities.ToDo
-import org.rasulov.todoapp.app.presentation.fragments.list.recyclerView_configs.advanced_adapter.AdvancedAdapter
+import org.rasulov.androidx.adapter.AdvancedAdapter
 import org.rasulov.todoapp.app.presentation.utils.getColorsFromRes
 import org.rasulov.todoapp.databinding.TodoItemBinding
 

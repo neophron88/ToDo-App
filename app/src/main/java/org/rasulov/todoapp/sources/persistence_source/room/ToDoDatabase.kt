@@ -27,7 +27,9 @@ abstract class ToDoDatabase : RoomDatabase() {
                     appContext,
                     ToDoDatabase::class.java,
                     "todo"
-                ).build()
+                )
+                    .createFromAsset("todo.db")
+                    .build()
                 database = temp3
                 return temp3
             }
