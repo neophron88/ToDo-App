@@ -59,18 +59,17 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
 
     private fun setUpRecyclerView() {
         binding.list.itemAnimator = SlideInUpAnimator().apply { addDuration = 300 }
-        binding.list.adapter = adapter
         binding.list.layoutManager = StaggeredGridLayoutManager(
             2,
             StaggeredGridLayoutManager.VERTICAL
         )
 
-        adapter.setSwipeConfig(toRight = false) { item, _ ->
+        adapter.setSwipeConfig { item, _ ->
             viewModel.deleteToDo(item.id)
             canBeRestored(item)
         }
-
         adapter.setDiffUtilItemCallBack(ToDoDiffUtil())
+        binding.list.adapter = adapter
     }
 
     private fun canBeRestored(item: ToDo) {
