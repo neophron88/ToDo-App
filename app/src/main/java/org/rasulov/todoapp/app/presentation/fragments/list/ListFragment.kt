@@ -6,19 +6,20 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.rasulov.androidx.fragment.addMenuProvider
 import org.rasulov.androidx.fragment.viewBindings
 import org.rasulov.todoapp.R
-import org.rasulov.todoapp.app.Singletons
 import org.rasulov.todoapp.app.domain.entities.Priority
 import org.rasulov.todoapp.app.domain.entities.ToDo
 import org.rasulov.todoapp.app.domain.entities.ToDoSearchBy
@@ -27,15 +28,12 @@ import org.rasulov.todoapp.app.presentation.fragments.list.adapter.ToDoDiffUtil
 import org.rasulov.todoapp.app.presentation.fragments.update.entities.ToDoParcel
 import org.rasulov.todoapp.app.presentation.utils.setOnQueryListener
 import org.rasulov.todoapp.app.presentation.utils.setPriority
-import org.rasulov.todoapp.app.presentation.utils.viewModel
 import org.rasulov.todoapp.databinding.FragmentListBinding
 
-
+@AndroidEntryPoint
 class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListener {
 
-    private val viewModel by viewModel {
-        ListViewModel(Singletons.toDoRepository)
-    }
+    private val viewModel: ListViewModel by viewModels()
 
     private val binding: FragmentListBinding by viewBindings()
 
@@ -58,15 +56,14 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
     }
 
     private fun setUpRecyclerView() {
-        binding.list.itemAnimator = SlideInUpAnimator().apply { addDuration = 300 }
-        binding.list.layoutManager = StaggeredGridLayoutManager(
-            2,
-            StaggeredGridLayoutManager.VERTICAL
-        )
 
-        adapter.setSwipeConfig { item, _ ->
-            viewModel.deleteToDo(item.id)
-            canBeRestored(item)
+        binding.list.itemAnimator = SlideInUpAnimator().apply { addDuration = 300 }
+        binding.list.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        adapter.setSwipeConfig { toDo, _ ->
+            viewModel.deleteToDo(toDo.id)
+            canBeRestored(toDo)
         }
         adapter.setDiffUtilItemCallBack(ToDoDiffUtil())
         binding.list.adapter = adapter

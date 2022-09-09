@@ -1,6 +1,5 @@
 package org.rasulov.todoapp.sources.persistence_source
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
 import kotlinx.coroutines.flow.*
@@ -8,12 +7,16 @@ import org.rasulov.todoapp.app.data.todo.ToDoSource
 import org.rasulov.todoapp.app.domain.entities.Settings
 import org.rasulov.todoapp.app.domain.entities.ToDo
 import org.rasulov.todoapp.app.domain.entities.ToDoSearchBy
+import org.rasulov.todoapp.sources.persistence_source.entities.FindBy
 import org.rasulov.todoapp.sources.persistence_source.preference.ToDoPrefAccessor
 import org.rasulov.todoapp.sources.persistence_source.room.ToDoDao
 import org.rasulov.todoapp.sources.persistence_source.room.entities.ToDoDBEntity
 import org.rasulov.todoapp.sources.persistence_source.room.entities.ToDoIDTuple
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PersistenceToDoSource(
+@Singleton
+class PersistenceToDoSource @Inject constructor(
     private val toDoDao: ToDoDao,
     private val toDoPrefAccessor: ToDoPrefAccessor
 ) : ToDoSource {

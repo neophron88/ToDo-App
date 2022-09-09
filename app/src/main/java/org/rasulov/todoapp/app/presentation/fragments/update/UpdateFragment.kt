@@ -5,24 +5,23 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
 import org.rasulov.androidx.fragment.addMenuProvider
 import org.rasulov.androidx.fragment.getGradientDrawable
 import org.rasulov.androidx.fragment.viewBindings
 import org.rasulov.todoapp.R
-import org.rasulov.todoapp.app.Singletons
 import org.rasulov.todoapp.app.domain.entities.Priority
 import org.rasulov.todoapp.app.domain.entities.ToDo
 import org.rasulov.todoapp.app.presentation.utils.*
 import org.rasulov.todoapp.databinding.FragmentAddBinding
 
-
+@AndroidEntryPoint
 class UpdateFragment : Fragment(R.layout.fragment_update) {
 
-    private val viewModel by viewModel {
-        UpdateViewModel(Singletons.toDoRepository)
-    }
+    private val viewModel: UpdateViewModel by viewModels()
 
     private val binding: FragmentAddBinding by viewBindings()
 

@@ -5,8 +5,11 @@ import org.rasulov.todoapp.app.domain.Repository
 import org.rasulov.todoapp.app.domain.entities.Settings
 import org.rasulov.todoapp.app.domain.entities.ToDo
 import org.rasulov.todoapp.app.domain.entities.ToDoSearchBy
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ToDoRepository(
+@Singleton
+class ToDoRepository @Inject constructor(
     private val source: ToDoSource
 ) : Repository {
 

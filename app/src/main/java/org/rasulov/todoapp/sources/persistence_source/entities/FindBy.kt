@@ -1,4 +1,4 @@
-package org.rasulov.todoapp.sources.persistence_source
+package org.rasulov.todoapp.sources.persistence_source.entities
 
 import org.rasulov.todoapp.app.domain.entities.Settings
 import org.rasulov.todoapp.app.domain.entities.ToDoSearchBy
