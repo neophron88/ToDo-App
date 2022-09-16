@@ -16,7 +16,9 @@
         android:hint="@string/title"
         android:inputType="textPersonName"
         android:paddingStart="20dp"
-        android:paddingEnd="20dp" />
+        android:paddingEnd="20dp"
+        android:transitionName="title"
+        />
 
     <Spinner
         android:id="@+id/spinner_priority"
@@ -26,7 +28,10 @@
         android:background="@drawable/spinner_shape"
         android:entries="@array/priorities"
         android:paddingStart="15dp"
-        android:paddingEnd="15dp" />
+        android:paddingEnd="15dp"
+        android:transitionName="priority"
+
+        />
 
     <EditText
         android:id="@+id/edt_description"
@@ -38,10 +43,11 @@
         android:ems="5"
         android:gravity="top|start"
         android:hint="@string/description"
+        android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
-        android:imeOptions="actionDone"
         android:paddingStart="20dp"
         android:paddingTop="15dp"
-        android:paddingEnd="20dp" />
+        android:paddingEnd="20dp"
+        android:transitionName="description" />
 </LinearLayout>

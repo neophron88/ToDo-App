@@ -51,3 +51,8 @@ fun Fragment.getGradientDrawable(@DrawableRes res: Int): GradientDrawable {
         res
     ) as GradientDrawable
 }
+
+fun Fragment.disableTransitionOverlap() {
+    allowEnterTransitionOverlap = false
+    allowReturnTransitionOverlap = false
+}

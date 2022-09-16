@@ -7,8 +7,7 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="8dp"
     app:cardElevation="2dp"
-    app:cardUseCompatPadding="true"
-    >
+    app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,9 +20,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:maxLines="1"
+            android:textColor="@color/darkGray"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/darkGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,8 +34,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:maxLines="15"
-            android:textSize="16sp"
             android:textColor="@color/darkGray"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title"

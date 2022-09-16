@@ -1,26 +1,24 @@
 package org.rasulov.todoapp.app.presentation.fragments.add
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
+import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.transition.Slide
 import dagger.hilt.android.AndroidEntryPoint
 import org.rasulov.androidx.fragment.addMenuProvider
+import org.rasulov.androidx.fragment.disableTransitionOverlap
 import org.rasulov.androidx.fragment.getGradientDrawable
 import org.rasulov.androidx.fragment.viewBindings
 import org.rasulov.todoapp.R
-import org.rasulov.todoapp.app.domain.Repository
 import org.rasulov.todoapp.app.domain.entities.Priority
 import org.rasulov.todoapp.app.domain.entities.ToDo
 import org.rasulov.todoapp.app.presentation.utils.*
 import org.rasulov.todoapp.databinding.FragmentAddBinding
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class AddFragment : Fragment(R.layout.fragment_add) {
@@ -33,6 +31,16 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
     private val colors by lazy {
         requireContext().getColorsFromRes(R.array.colors)
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = Slide(Gravity.END)
+        returnTransition = Slide(Gravity.END)
+
+        disableTransitionOverlap()
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

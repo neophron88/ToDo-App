@@ -1,7 +1,6 @@
 package org.rasulov.todoapp.app.presentation.fragments.list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
@@ -11,8 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.transition.Fade
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +21,7 @@ import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.rasulov.androidx.fragment.addMenuProvider
+import org.rasulov.androidx.fragment.disableTransitionOverlap
 import org.rasulov.androidx.fragment.viewBindings
 import org.rasulov.todoapp.R
 import org.rasulov.todoapp.app.domain.entities.Priority
@@ -27,7 +29,9 @@ import org.rasulov.todoapp.app.domain.entities.ToDo
 import org.rasulov.todoapp.app.domain.entities.ToDoSearchBy
 import org.rasulov.todoapp.app.presentation.fragments.list.adapter.ToDoAdapter
 import org.rasulov.todoapp.app.presentation.fragments.list.adapter.ToDoDiffUtil
+import org.rasulov.todoapp.app.presentation.fragments.list.adapter.ToDoHolder
 import org.rasulov.todoapp.app.presentation.fragments.update.entities.ToDoParcel
+import org.rasulov.todoapp.app.presentation.utils.getColorsFromRes
 import org.rasulov.todoapp.app.presentation.utils.setOnQueryListener
 import org.rasulov.todoapp.app.presentation.utils.setPriority
 import org.rasulov.todoapp.databinding.FragmentListBinding
@@ -41,8 +45,20 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
 
     private val controller by lazy { findNavController() }
 
-    private val adapter by lazy { ToDoAdapter(this) }
+    private val adapter by lazy {
+        ToDoAdapter(
+            this,
+            requireContext().getColorsFromRes(R.array.colors)
+        )
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        exitTransition = Fade()
+        reenterTransition = Fade()
+        disableTransitionOverlap()
+
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,7 +74,6 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
     }
 
     private fun setUpRecyclerView() {
-
         binding.list.itemAnimator = SlideInUpAnimator().apply { addDuration = 300 }
         binding.list.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -115,11 +130,10 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
     }
 
 
-    private fun observeData() {
-        lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.getAllToDos().collectLatest {
-                    renderResult(it) }
+    private fun observeData() = lifecycleScope.launch {
+        viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
+            viewModel.getAllToDos().collectLatest {
+                renderResult(it)
             }
         }
     }
@@ -141,9 +155,16 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
         binding.loadProgress.isVisible = false
     }
 
-    override fun onItemClick(toDo: ToDo) {
+    override fun onItemClick(holder: ToDoHolder) = with(holder) {
         val action =
-            ListFragmentDirections.actionListFragmentToUpdateFragment(ToDoParcel.fromToDo(toDo))
-        controller.navigate(action)
+            ListFragmentDirections.actionListFragmentToUpdateFragment(ToDoParcel.fromToDo(todo))
+        controller.navigate(
+            action, FragmentNavigatorExtras(
+                bnd.title to "title",
+                bnd.description to "description",
+                bnd.priorityIndicator to "priority"
+            )
+        )
     }
+
 }

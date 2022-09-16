@@ -1,6 +1,7 @@
 package org.rasulov.todoapp.app.presentation.fragments.update
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -8,22 +9,25 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.transition.ChangeBounds
+import androidx.transition.Slide
 import dagger.hilt.android.AndroidEntryPoint
 import org.rasulov.androidx.fragment.addMenuProvider
+import org.rasulov.androidx.fragment.disableTransitionOverlap
 import org.rasulov.androidx.fragment.getGradientDrawable
 import org.rasulov.androidx.fragment.viewBindings
 import org.rasulov.todoapp.R
 import org.rasulov.todoapp.app.domain.entities.Priority
 import org.rasulov.todoapp.app.domain.entities.ToDo
 import org.rasulov.todoapp.app.presentation.utils.*
-import org.rasulov.todoapp.databinding.FragmentAddBinding
+import org.rasulov.todoapp.databinding.FragmentUpdateBinding
 
 @AndroidEntryPoint
 class UpdateFragment : Fragment(R.layout.fragment_update) {
 
     private val viewModel: UpdateViewModel by viewModels()
 
-    private val binding: FragmentAddBinding by viewBindings()
+    private val binding: FragmentUpdateBinding by viewBindings()
 
     private val controller by lazy { findNavController() }
 
@@ -31,6 +35,18 @@ class UpdateFragment : Fragment(R.layout.fragment_update) {
 
     private val colors by lazy {
         requireContext().getColorsFromRes(R.array.colors)
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        sharedElementEnterTransition = ChangeBounds().apply { duration = 500 }
+        returnTransition = Slide(Gravity.END)
+
+        disableTransitionOverlap()
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

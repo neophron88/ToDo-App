@@ -12,18 +12,10 @@
         tools:layout="@layout/fragment_list">
         <action
             android:id="@+id/action_listFragment_to_addFragment"
-            app:destination="@id/addFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right" />
+            app:destination="@id/addFragment" />
         <action
             android:id="@+id/action_listFragment_to_updateFragment"
-            app:destination="@id/updateFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right" />
+            app:destination="@id/updateFragment" />
     </fragment>
     <fragment
         android:id="@+id/addFragment"
@@ -34,7 +26,7 @@
         android:id="@+id/updateFragment"
         android:name="org.rasulov.todoapp.app.presentation.fragments.update.UpdateFragment"
         android:label="Update"
-        tools:layout="@layout/fragment_update" >
+        tools:layout="@layout/fragment_update">
         <argument
             android:name="item"
             app:argType="org.rasulov.todoapp.app.presentation.fragments.update.entities.ToDoParcel" />
