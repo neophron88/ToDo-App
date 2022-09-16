@@ -1,6 +1,7 @@
 package org.rasulov.todoapp.app.presentation.fragments.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
@@ -12,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
@@ -71,7 +73,8 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
 
     private fun canBeRestored(item: ToDo) {
         Snackbar
-            .make(binding.root, "Deleted ${item.title}", Snackbar.LENGTH_LONG)
+            .make(binding.parent, "Deleted ${item.title}", Snackbar.LENGTH_LONG)
+            .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
             .setAction(getString(R.string.undo)) { viewModel.addToDO(item) }
             .show()
     }
@@ -115,7 +118,8 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
     private fun observeData() {
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.getAllToDos().collectLatest { renderResult(it) }
+                viewModel.getAllToDos().collectLatest {
+                    renderResult(it) }
             }
         }
     }

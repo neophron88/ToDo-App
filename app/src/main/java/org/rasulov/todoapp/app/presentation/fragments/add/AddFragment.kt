@@ -2,7 +2,9 @@ package org.rasulov.todoapp.app.presentation.fragments.add
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -33,18 +35,8 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         requireContext().getColorsFromRes(R.array.colors)
     }
 
-    @Inject
-    lateinit var repository: Repository
-
-    @Inject
-    lateinit var repository2: Repository
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        Log.d("it0088", "onViewCreated: $repository")
-        Log.d("it0088", "onViewCreated: $repository2")
 
         addMenuProvider()
 
