@@ -60,7 +60,7 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
 
         reenterTransition = Fade().apply {
             duration = 500
-            addListener {  }
+            addListener { }
         }
         disableTransitionOverlap()
 
@@ -113,6 +113,7 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
         onCreateMenu = { menu ->
             val searchView = menu.findItem(R.id.menu_search).actionView as SearchView
             searchView.setOnQueryListener {
+                viewModel.setSearchBy(ToDoSearchBy(it))
             }
         },
 
@@ -136,9 +137,7 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
 
 
     private fun observeData() = lifecycleScope.launch {
-        viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-            viewModel.getAllToDos().collectLatest {renderResult(it)}
-        }
+        viewModel.allToDos.collectLatest { renderResult(it) }
     }
 
     private fun renderResult(list: List<ToDo>) {

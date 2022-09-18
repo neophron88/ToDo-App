@@ -1,5 +1,6 @@
 package org.rasulov.todoapp.sources.persistence_source
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
 import kotlinx.coroutines.flow.*
@@ -34,6 +35,7 @@ class PersistenceToDoSource @Inject constructor(
         return findByFlow
             .debounce(200)
             .flatMapLatest { findBy ->
+                Log.d("it0088", "getAllToDos: ")
                 getAllToDos(findBy)
             }
     }

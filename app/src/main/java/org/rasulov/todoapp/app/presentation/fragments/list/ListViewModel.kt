@@ -1,10 +1,11 @@
 package org.rasulov.todoapp.app.presentation.fragments.list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import org.rasulov.todoapp.app.domain.Repository
 import org.rasulov.todoapp.app.domain.entities.Settings
@@ -18,9 +19,8 @@ class ListViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    fun getAllToDos(): Flow<List<ToDo>> {
-        return repository.getAllToDos()
-    }
+    val allToDos = repository.getAllToDos()
+        .shareIn(viewModelScope, SharingStarted.WhileSubscribed(), 1)
 
     fun deleteToDo(id: Long) {
         viewModelScope.launch {
