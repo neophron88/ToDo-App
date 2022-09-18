@@ -3,6 +3,7 @@ package org.rasulov.todoapp.app.presentation.fragments.update
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -42,7 +43,7 @@ class UpdateFragment : Fragment(R.layout.fragment_update) {
         super.onCreate(savedInstanceState)
 
         sharedElementEnterTransition = ChangeBounds().apply { duration = 500 }
-        returnTransition = Slide(Gravity.END)
+        returnTransition = Slide(Gravity.END).apply { interpolator = DecelerateInterpolator() }
 
         disableTransitionOverlap()
 
@@ -114,4 +115,5 @@ class UpdateFragment : Fragment(R.layout.fragment_update) {
             Toast.LENGTH_LONG
         ).show()
     }
+
 }

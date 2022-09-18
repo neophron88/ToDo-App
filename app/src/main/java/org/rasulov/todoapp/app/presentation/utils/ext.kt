@@ -1,6 +1,7 @@
 package org.rasulov.todoapp.app.presentation.utils
 
 import android.content.Context
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.AdapterView
@@ -62,6 +63,7 @@ fun SearchView.setOnQueryListener(onQueryListener: OnQueryListener) {
         override fun onQueryTextSubmit(query: String?) = false
 
         override fun onQueryTextChange(newText: String?): Boolean {
+            Log.d("it0088", "onQueryTextChange: $newText")
             val text = newText ?: return false
             onQueryListener(text)
             return true

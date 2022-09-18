@@ -1,6 +1,7 @@
 package org.rasulov.todoapp.app.presentation.fragments.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 import org.rasulov.androidx.fragment.addMenuProvider
 import org.rasulov.androidx.fragment.disableTransitionOverlap
 import org.rasulov.androidx.fragment.viewBindings
+import org.rasulov.androidx.transition.addListener
 import org.rasulov.todoapp.R
 import org.rasulov.todoapp.app.domain.entities.Priority
 import org.rasulov.todoapp.app.domain.entities.ToDo
@@ -55,7 +57,11 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         exitTransition = Fade()
-        reenterTransition = Fade()
+
+        reenterTransition = Fade().apply {
+            duration = 500
+            addListener {  }
+        }
         disableTransitionOverlap()
 
     }
@@ -107,6 +113,7 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
         onCreateMenu = { menu ->
             val searchView = menu.findItem(R.id.menu_search).actionView as SearchView
             searchView.setOnQueryListener {
+                Log.d("it0088", "setOnQueryListener: $it")
                 viewModel.setSearchBy(ToDoSearchBy(it))
             }
         },
@@ -132,9 +139,7 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
 
     private fun observeData() = lifecycleScope.launch {
         viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-            viewModel.getAllToDos().collectLatest {
-                renderResult(it)
-            }
+            viewModel.getAllToDos().collectLatest {renderResult(it)}
         }
     }
 

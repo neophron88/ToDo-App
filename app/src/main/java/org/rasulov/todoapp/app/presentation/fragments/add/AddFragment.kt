@@ -3,6 +3,7 @@ package org.rasulov.todoapp.app.presentation.fragments.add
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.animation.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -36,8 +37,8 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enterTransition = Slide(Gravity.END)
-        returnTransition = Slide(Gravity.END)
+        enterTransition = Slide(Gravity.END).apply { interpolator = DecelerateInterpolator() }
+        returnTransition = Slide(Gravity.END).apply { interpolator = DecelerateInterpolator() }
 
         disableTransitionOverlap()
 
@@ -80,6 +81,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
             drawable.setStroke((2).dpToPixel(requireContext()), colors[position])
             (item as? TextView)?.setTextColor(colors[position])
             binding.toDoViews.spinnerPriority.background = drawable
+
         }
     }
 

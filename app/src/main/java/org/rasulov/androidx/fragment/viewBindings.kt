@@ -39,7 +39,7 @@ class LazyFragmentsViewBinding<VB>(
     }
 
     private fun checkViewLifeCycle() {
-        if (viewLifecycleOwner != fragment.viewLifecycleOwner) {
+        if (viewLifecycleOwner !== fragment.viewLifecycleOwner) {
 
             fragment.view
                 ?: throw IllegalStateException(
