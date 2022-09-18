@@ -4,16 +4,34 @@ import android.graphics.drawable.GradientDrawable
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.CoroutineScope
 
 typealias OnMenuItemSelected = (item: MenuItem) -> Unit
 typealias OnCreateMenu = (menu: Menu) -> Unit
 typealias OnPrepareMenu = (menu: Menu) -> Unit
+
+
+inline val Fragment.viewLifeCycleScope: LifecycleCoroutineScope
+    get() = viewLifecycleOwner.lifecycleScope
+
+
+suspend fun Fragment.repeatOnViewLifeCycle(
+    state: Lifecycle.State,
+    block: suspend CoroutineScope.() -> Unit
+) {
+    viewLifecycleOwner.repeatOnLifecycle(state, block)
+}
+
 
 fun Fragment.addMenuProvider(
     @MenuRes menuRes: Int,

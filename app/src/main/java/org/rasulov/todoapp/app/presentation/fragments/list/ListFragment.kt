@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -21,9 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.rasulov.androidx.fragment.addMenuProvider
-import org.rasulov.androidx.fragment.disableTransitionOverlap
-import org.rasulov.androidx.fragment.viewBindings
+import org.rasulov.androidx.fragment.*
 import org.rasulov.androidx.transition.addListener
 import org.rasulov.todoapp.R
 import org.rasulov.todoapp.app.domain.entities.Priority
@@ -136,8 +135,10 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
     }
 
 
-    private fun observeData() = lifecycleScope.launch {
-        viewModel.allToDos.collectLatest { renderResult(it) }
+    private fun observeData() = viewLifeCycleScope.launch {
+        repeatOnViewLifeCycle(Lifecycle.State.STARTED) {
+            viewModel.allToDos.collectLatest { renderResult(it) }
+        }
     }
 
     private fun renderResult(list: List<ToDo>) {

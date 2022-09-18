@@ -35,7 +35,6 @@ class PersistenceToDoSource @Inject constructor(
         return findByFlow
             .debounce(200)
             .flatMapLatest { findBy ->
-                Log.d("it0088", "getAllToDos: ")
                 getAllToDos(findBy)
             }
     }

@@ -20,7 +20,7 @@ class ListViewModel @Inject constructor(
 
 
     val allToDos = repository.getAllToDos()
-        .shareIn(viewModelScope, SharingStarted.WhileSubscribed(), 1)
+
 
     fun deleteToDo(id: Long) {
         viewModelScope.launch {
