@@ -113,8 +113,6 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
         onCreateMenu = { menu ->
             val searchView = menu.findItem(R.id.menu_search).actionView as SearchView
             searchView.setOnQueryListener {
-                Log.d("it0088", "setOnQueryListener: $it")
-                viewModel.setSearchBy(ToDoSearchBy(it))
             }
         },
 

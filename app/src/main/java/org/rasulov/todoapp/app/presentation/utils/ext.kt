@@ -63,7 +63,6 @@ fun SearchView.setOnQueryListener(onQueryListener: OnQueryListener) {
         override fun onQueryTextSubmit(query: String?) = false
 
         override fun onQueryTextChange(newText: String?): Boolean {
-            Log.d("it0088", "onQueryTextChange: $newText")
             val text = newText ?: return false
             onQueryListener(text)
             return true
