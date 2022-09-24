@@ -1,6 +1,7 @@
 package org.rasulov.androidx.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -64,4 +65,5 @@ abstract class AdvancedAdapter<T : Any, VH : RecyclerView.ViewHolder> :
     fun setDiffUtilItemCallBack(callback: DiffUtil.ItemCallback<T>) {
         itemCallback = callback
     }
+
 }

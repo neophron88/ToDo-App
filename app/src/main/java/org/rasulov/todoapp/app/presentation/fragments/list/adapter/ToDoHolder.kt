@@ -1,6 +1,7 @@
 package org.rasulov.todoapp.app.presentation.fragments.list.adapter
 
 import android.content.res.ColorStateList
+import android.util.Log
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.rasulov.todoapp.app.domain.entities.ToDo

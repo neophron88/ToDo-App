@@ -1,12 +1,10 @@
 package org.rasulov.todoapp.app.presentation.fragments.list.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import org.rasulov.todoapp.R
-import org.rasulov.todoapp.app.domain.entities.ToDo
 import org.rasulov.androidx.adapter.AdvancedAdapter
-import org.rasulov.todoapp.app.presentation.utils.getColorsFromRes
+import org.rasulov.todoapp.app.domain.entities.ToDo
 import org.rasulov.todoapp.databinding.TodoItemBinding
 
 
@@ -19,7 +17,7 @@ class ToDoAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToDoHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = TodoItemBinding.inflate(inflater, parent, false)
-        val holder = ToDoHolder(binding,colorsForPriority)
+        val holder = ToDoHolder(binding, colorsForPriority)
         binding.root.setOnClickListener { onClick.onItemClick(holder) }
         return holder
     }

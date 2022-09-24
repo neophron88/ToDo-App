@@ -41,13 +41,8 @@ class UpdateFragment : Fragment(R.layout.fragment_update) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         sharedElementEnterTransition = ChangeBounds().apply { duration = 500 }
-        returnTransition = Slide(Gravity.END).apply { interpolator = DecelerateInterpolator() }
-
         disableTransitionOverlap()
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

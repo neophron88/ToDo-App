@@ -37,11 +37,8 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enterTransition = Slide(Gravity.END).apply { interpolator = DecelerateInterpolator() }
-        returnTransition = Slide(Gravity.END).apply { interpolator = DecelerateInterpolator() }
-
+        enterTransition = Slide(Gravity.END).apply { duration = 500 }
         disableTransitionOverlap()
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

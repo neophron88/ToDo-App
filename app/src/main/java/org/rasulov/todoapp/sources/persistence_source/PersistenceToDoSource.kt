@@ -1,9 +1,11 @@
 package org.rasulov.todoapp.sources.persistence_source
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import org.rasulov.todoapp.app.data.todo.ToDoSource
 import org.rasulov.todoapp.app.domain.entities.Settings
 import org.rasulov.todoapp.app.domain.entities.ToDo
@@ -33,7 +35,6 @@ class PersistenceToDoSource @Inject constructor(
 
     override fun getAllToDos(): Flow<List<ToDo>> {
         return findByFlow
-            .debounce(200)
             .flatMapLatest { findBy ->
                 getAllToDos(findBy)
             }
