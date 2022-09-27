@@ -1,4 +1,4 @@
-package org.rasulov.androidx.lifecycle
+package org.rasulov.utilities.lifecycle
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData

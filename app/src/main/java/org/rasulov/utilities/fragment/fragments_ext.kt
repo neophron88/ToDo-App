@@ -1,4 +1,4 @@
-package org.rasulov.androidx.fragment
+package org.rasulov.utilities.fragment
 
 import android.graphics.drawable.GradientDrawable
 import android.view.Menu
@@ -15,6 +15,7 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 typealias OnMenuItemSelected = (item: MenuItem) -> Unit
 typealias OnCreateMenu = (menu: Menu) -> Unit
@@ -30,6 +31,10 @@ suspend fun Fragment.repeatOnViewLifeCycle(
     block: suspend CoroutineScope.() -> Unit
 ) {
     viewLifecycleOwner.repeatOnLifecycle(state, block)
+}
+
+fun Fragment.repeatWhenViewStarted(block: suspend CoroutineScope.() -> Unit) {
+    viewLifeCycleScope.launch { repeatOnViewLifeCycle(Lifecycle.State.STARTED, block) }
 }
 
 
@@ -64,10 +69,7 @@ fun Fragment.addMenuProvider(
 
 
 fun Fragment.getGradientDrawable(@DrawableRes res: Int): GradientDrawable {
-    return ContextCompat.getDrawable(
-        requireContext(),
-        res
-    ) as GradientDrawable
+    return ContextCompat.getDrawable(requireContext(), res) as GradientDrawable
 }
 
 fun Fragment.disableTransitionOverlap() {

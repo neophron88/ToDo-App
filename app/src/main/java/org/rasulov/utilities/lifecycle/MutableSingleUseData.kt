@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package org.rasulov.androidx.lifecycle
+package org.rasulov.utilities.lifecycle
 
 import androidx.lifecycle.LifecycleOwner
 

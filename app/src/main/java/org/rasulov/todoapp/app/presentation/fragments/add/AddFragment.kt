@@ -3,18 +3,18 @@ package org.rasulov.todoapp.app.presentation.fragments.add
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
-import android.view.animation.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.transition.Fade
 import androidx.transition.Slide
 import dagger.hilt.android.AndroidEntryPoint
-import org.rasulov.androidx.fragment.addMenuProvider
-import org.rasulov.androidx.fragment.disableTransitionOverlap
-import org.rasulov.androidx.fragment.getGradientDrawable
-import org.rasulov.androidx.fragment.viewBindings
+import org.rasulov.utilities.fragment.addMenuProvider
+import org.rasulov.utilities.fragment.disableTransitionOverlap
+import org.rasulov.utilities.fragment.getGradientDrawable
+import org.rasulov.utilities.fragment.viewBindings
 import org.rasulov.todoapp.R
 import org.rasulov.todoapp.app.domain.entities.Priority
 import org.rasulov.todoapp.app.domain.entities.ToDo
@@ -37,7 +37,8 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enterTransition = Slide(Gravity.END).apply { duration = 500 }
+        enterTransition = Slide(Gravity.END).apply { duration = 400 }
+        returnTransition = Slide(Gravity.END).apply { duration = 350 }
         disableTransitionOverlap()
     }
 

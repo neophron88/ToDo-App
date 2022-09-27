@@ -7,31 +7,28 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import androidx.transition.Fade
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import org.rasulov.androidx.fragment.*
 import org.rasulov.todoapp.R
 import org.rasulov.todoapp.app.domain.entities.Priority
 import org.rasulov.todoapp.app.domain.entities.ToDo
 import org.rasulov.todoapp.app.domain.entities.ToDoSearchBy
 import org.rasulov.todoapp.app.presentation.fragments.list.adapter.ToDoAdapter
-import org.rasulov.todoapp.app.presentation.fragments.list.adapter.ToDoDiffUtil
 import org.rasulov.todoapp.app.presentation.fragments.list.adapter.ToDoHolder
 import org.rasulov.todoapp.app.presentation.fragments.update.entities.ToDoParcel
 import org.rasulov.todoapp.app.presentation.utils.getColorsFromRes
 import org.rasulov.todoapp.app.presentation.utils.setOnQueryListener
 import org.rasulov.todoapp.app.presentation.utils.setPriority
 import org.rasulov.todoapp.databinding.FragmentListBinding
+import org.rasulov.utilities.fragment.*
+import org.rasulov.utilities.recyclerview.setSwipeItem
 
 @AndroidEntryPoint
 class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListener {
@@ -59,21 +56,19 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
 
         addMenuProvider()
 
-        observeData(adapter)
+        binding.list.postDelayed({ observeData(adapter) }, 600)
 
     }
 
-    private fun setUpRecyclerView(adapter: ToDoAdapter) {
-
-        binding.list.itemAnimator = SlideInUpAnimator().apply { addDuration = 300 }
-        binding.list.layoutManager = StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL)
-
-        adapter.setSwipeConfig { toDo, _ ->
+    private fun setUpRecyclerView(adapter: ToDoAdapter) = with(binding) {
+        list.adapter = adapter
+        list.itemAnimator = SlideInUpAnimator().apply { addDuration = 300 }
+        list.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        list.setSwipeItem { position, _ ->
+            val toDo = adapter.currentList[position]
             viewModel.deleteToDo(toDo.id)
             canBeRestored(toDo)
         }
-        adapter.setDiffUtilItemCallBack(ToDoDiffUtil())
-        binding.list.adapter = adapter
     }
 
     private fun canBeRestored(item: ToDo) {
@@ -120,17 +115,14 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
     }
 
 
-    private fun observeData(adapter: ToDoAdapter) = viewLifeCycleScope.launch {
-        repeatOnViewLifeCycle(Lifecycle.State.STARTED) {
-            viewModel.allToDos.collectLatest {
-                renderResult(adapter, it)
-            }
-        }
+    private fun observeData(adapter: ToDoAdapter) = repeatWhenViewStarted {
+        viewModel.allToDos.collectLatest { renderResult(adapter, it) }
     }
+
 
     private fun renderResult(adapter: ToDoAdapter, list: List<ToDo>) {
         disableViews()
-        adapter.submitData(list)
+        adapter.submitList(list)
         if (list.isNotEmpty()) {
             binding.list.isVisible = true
         } else {
@@ -156,5 +148,4 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
             )
         )
     }
-
 }

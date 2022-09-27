@@ -1,4 +1,4 @@
-package org.rasulov.androidx.lifecycle
+package org.rasulov.utilities.lifecycle
 
  class  Handler<T>(
     value: T?

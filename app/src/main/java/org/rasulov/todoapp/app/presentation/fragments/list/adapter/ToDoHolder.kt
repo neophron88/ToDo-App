@@ -31,6 +31,5 @@ class ToDoHolder(
             description.text = todo.description
         }
     }
-
-
 }
+

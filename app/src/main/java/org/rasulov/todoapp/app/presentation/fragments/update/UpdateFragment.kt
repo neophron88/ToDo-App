@@ -3,7 +3,6 @@ package org.rasulov.todoapp.app.presentation.fragments.update
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
-import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -13,10 +12,10 @@ import androidx.navigation.fragment.navArgs
 import androidx.transition.ChangeBounds
 import androidx.transition.Slide
 import dagger.hilt.android.AndroidEntryPoint
-import org.rasulov.androidx.fragment.addMenuProvider
-import org.rasulov.androidx.fragment.disableTransitionOverlap
-import org.rasulov.androidx.fragment.getGradientDrawable
-import org.rasulov.androidx.fragment.viewBindings
+import org.rasulov.utilities.fragment.addMenuProvider
+import org.rasulov.utilities.fragment.disableTransitionOverlap
+import org.rasulov.utilities.fragment.getGradientDrawable
+import org.rasulov.utilities.fragment.viewBindings
 import org.rasulov.todoapp.R
 import org.rasulov.todoapp.app.domain.entities.Priority
 import org.rasulov.todoapp.app.domain.entities.ToDo
@@ -42,6 +41,7 @@ class UpdateFragment : Fragment(R.layout.fragment_update) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = ChangeBounds().apply { duration = 500 }
+        returnTransition = Slide(Gravity.END).apply { duration = 350 }
         disableTransitionOverlap()
     }
 

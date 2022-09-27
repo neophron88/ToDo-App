@@ -1,6 +1,5 @@
-package org.rasulov.androidx.fragment
+package org.rasulov.utilities.fragment
 
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -25,6 +24,7 @@ inline fun <reified VB : ViewBinding> Fragment.viewBindings(): LazyFragmentsView
     return LazyFragmentsViewBinding(this, VB::class.java)
 }
 
+@Suppress("UNCHECKED_CAST")
 class LazyFragmentsViewBinding<VB>(
     private val fragment: Fragment,
     private val VBClazz: Class<VB>,
@@ -47,14 +47,10 @@ class LazyFragmentsViewBinding<VB>(
                             "before onViewCreated() or after onDestroyView()"
                 )
 
-
             viewLifecycleOwner = fragment.viewLifecycleOwner
             val bind = VBClazz.getMethod("bind", View::class.java)
             val bindingObj = bind.invoke(null, fragment.view)
             binding = bindingObj as VB
         }
-
-
     }
-
 }

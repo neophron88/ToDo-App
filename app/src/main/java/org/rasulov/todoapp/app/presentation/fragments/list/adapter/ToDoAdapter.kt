@@ -1,9 +1,8 @@
 package org.rasulov.todoapp.app.presentation.fragments.list.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import org.rasulov.androidx.adapter.AdvancedAdapter
+import androidx.recyclerview.widget.ListAdapter
 import org.rasulov.todoapp.app.domain.entities.ToDo
 import org.rasulov.todoapp.databinding.TodoItemBinding
 
@@ -11,7 +10,7 @@ import org.rasulov.todoapp.databinding.TodoItemBinding
 class ToDoAdapter(
     private val onClick: OnClickListener,
     private val colorsForPriority: List<Int>
-) : AdvancedAdapter<ToDo, ToDoHolder>() {
+) : ListAdapter<ToDo, ToDoHolder>(ToDoDiffUtil()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToDoHolder {
