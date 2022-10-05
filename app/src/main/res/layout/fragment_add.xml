@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.presentation.fragments.add.AddFragment">
+    tools:context=".presentation.fragments.add.AddFragment">
 
     <include
         android:id="@+id/to_do_views"

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="24dp"
-    tools:context=".app.presentation.fragments.add.AddFragment">
+    tools:context=".presentation.fragments.add.AddFragment">
 
     <EditText
         android:id="@+id/edt_title"

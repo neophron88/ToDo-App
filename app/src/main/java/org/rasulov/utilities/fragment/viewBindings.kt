@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package org.rasulov.utilities.fragment
 
 import android.view.View
@@ -24,7 +26,6 @@ inline fun <reified VB : ViewBinding> Fragment.viewBindings(): LazyFragmentsView
     return LazyFragmentsViewBinding(this, VB::class.java)
 }
 
-@Suppress("UNCHECKED_CAST")
 class LazyFragmentsViewBinding<VB>(
     private val fragment: Fragment,
     private val VBClazz: Class<VB>,
@@ -34,11 +35,11 @@ class LazyFragmentsViewBinding<VB>(
     private var viewLifecycleOwner: LifecycleOwner? = null
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): VB {
-        checkViewLifeCycle()
+        checkLifeCycle()
         return binding!!
     }
 
-    private fun checkViewLifeCycle() {
+    private fun checkLifeCycle() {
         if (viewLifecycleOwner !== fragment.viewLifecycleOwner) {
 
             fragment.view

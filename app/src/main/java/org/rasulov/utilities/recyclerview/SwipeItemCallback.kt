@@ -3,7 +3,7 @@ package org.rasulov.utilities.recyclerview
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-typealias OnSwipeListener = (position: Int, direction: Int) -> Unit
+typealias OnSwipeListener = (viewHolder: RecyclerView.ViewHolder, direction: Int) -> Unit
 
 fun RecyclerView.setSwipeItem(
     toRight: Boolean = true,
@@ -32,6 +32,6 @@ class SwipeItemCallback(
     ) = false
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        onSwipeListener(viewHolder.adapterPosition, direction)
+        onSwipeListener(viewHolder, direction)
     }
 }

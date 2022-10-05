@@ -4,16 +4,12 @@ import android.graphics.drawable.GradientDrawable
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -40,7 +36,7 @@ fun Fragment.repeatWhenViewStarted(block: suspend CoroutineScope.() -> Unit) {
 
 fun Fragment.addMenuProvider(
     @MenuRes menuRes: Int,
-    onMenuItemSelected: OnMenuItemSelected = { },
+    onMenuItemSelected: OnMenuItemSelected = {},
     onCreateMenu: OnCreateMenu = {},
     onPrepareMenu: OnPrepareMenu = {}
 ) {
@@ -76,3 +72,5 @@ fun Fragment.disableTransitionOverlap() {
     allowEnterTransitionOverlap = false
     allowReturnTransitionOverlap = false
 }
+
+
