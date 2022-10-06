@@ -24,12 +24,9 @@ import org.rasulov.todoapp.domain.entities.ToDo
 import org.rasulov.todoapp.domain.entities.ToDoSearchBy
 import org.rasulov.todoapp.presentation.fragments.list.adapter.ToDoAdapter
 import org.rasulov.todoapp.presentation.fragments.list.adapter.ToDoHolder
-import org.rasulov.todoapp.presentation.fragments.list.adapter.toToDoHolder
+import org.rasulov.todoapp.presentation.fragments.list.adapter.asToDoHolder
 import org.rasulov.todoapp.presentation.fragments.update.entities.ToDoParcel
-import org.rasulov.todoapp.presentation.utils.CanBeRestored
-import org.rasulov.todoapp.presentation.utils.getColors
-import org.rasulov.todoapp.presentation.utils.setOnQueryListener
-import org.rasulov.todoapp.presentation.utils.setPriority
+import org.rasulov.todoapp.presentation.utils.*
 import org.rasulov.utilities.fragment.addMenuProvider
 import org.rasulov.utilities.fragment.disableTransitionOverlap
 import org.rasulov.utilities.fragment.repeatWhenViewStarted
@@ -46,10 +43,6 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
 
     private val controller by lazy { findNavController() }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        disableTransitionOverlap()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -62,7 +55,9 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
 
         addMenuProvider()
 
-        viewLifecycleOwner.postDelayed(600) { observeData(adapter) }
+        viewLifecycleOwner.postDelayed(500) {
+            observeUiState(adapter)
+        }
 
         observeUiEvent()
 
@@ -74,8 +69,7 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
         list.adapter = adapter
         list.itemAnimator = SlideInUpAnimator().apply { addDuration = 300 }
         list.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
-        list.setSwipeItem { holder, _ -> viewModel.deleteToDo(holder.toToDoHolder().todo) }
-
+        list.setSwipeItem { holder, _ -> viewModel.deleteToDo(holder.asToDoHolder().todo) }
     }
 
     private fun setUpFloatingAction() {
@@ -113,17 +107,17 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
     }
 
 
-    private fun observeData(adapter: ToDoAdapter) = repeatWhenViewStarted {
-        viewModel.allToDos.collectLatest {
-            adapter.submitList(it)
+    private fun observeUiState(adapter: ToDoAdapter) = repeatWhenViewStarted {
+        viewModel.uiState.collectLatest {
+            adapter.submitList(it.data)
             renderResult(it)
         }
     }
 
-    private fun renderResult(data: List<ToDo>) = with(binding) {
-        list.isVisible = data.isNotEmpty()
-        noDataContainer.isVisible = data.isEmpty()
-        loadProgress.isVisible = false
+    private fun renderResult(state: UiState<ToDo>) = with(binding) {
+        list.isVisible = state.isNotEmptyData
+        noDataContainer.isVisible = state.isEmptyData
+        loadProgress.isVisible = state.isLoading
     }
 
     private fun observeUiEvent() = viewModel.uiEvent.observe(viewLifecycleOwner) {
@@ -148,9 +142,9 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
             ListFragmentDirections.actionListFragmentToUpdateFragment(ToDoParcel.fromToDo(todo))
         controller.navigate(
             action, FragmentNavigatorExtras(
-                bnd.title to "title",
-                bnd.description to "description",
-                bnd.priorityIndicator to "priority"
+                binding.title to "title",
+                binding.description to "description",
+                binding.priorityIndicator to "priority"
             )
         )
     }

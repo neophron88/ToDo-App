@@ -26,9 +26,6 @@ class MutableSingleUseData<T : Any> : SingleUseData<T> {
 
     fun postValue(value: T) {
         liveData.postValue(Handler(value))
-
-        val i:Int? = null
-        MutableLiveData(1).postValue(i)
     }
 
 

@@ -1,5 +1,6 @@
 package org.rasulov.todoapp.presentation.fragments.update
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,10 +33,8 @@ class UpdateViewModel @Inject constructor(
         }
     }
 
-    fun deleteToDO(toDoId: Long) {
-        viewModelScope.launch {
-            repository.deleteToDo(toDoId)
-            _uiEvent.value = OperationSuccess
-        }
+    fun deleteToDO(toDoId: Long) = viewModelScope.launch {
+        repository.deleteToDo(toDoId)
+        _uiEvent.value = OperationSuccess
     }
 }

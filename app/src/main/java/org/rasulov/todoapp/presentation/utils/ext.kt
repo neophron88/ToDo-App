@@ -38,8 +38,7 @@ fun AppCompatActivity.navControllers(@IdRes layout: Int) = lazy {
 
 
 fun Context.getColors(@ArrayRes arrayRes: Int): List<Int> {
-    return resources
-        .getIntArray(arrayRes).toList()
+    return resources.getIntArray(arrayRes).toList()
 }
 
 

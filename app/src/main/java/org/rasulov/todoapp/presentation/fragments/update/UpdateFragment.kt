@@ -1,6 +1,7 @@
 package org.rasulov.todoapp.presentation.fragments.update
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
@@ -38,11 +39,10 @@ class UpdateFragment : Fragment(R.layout.fragment_update) {
         requireContext().getColors(R.array.colors)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedElementEnterTransition = ChangeBounds().apply { duration = 500 }
-        returnTransition = Slide(Gravity.END).apply { duration = 350 }
+        sharedElementEnterTransition = ChangeBounds().apply { duration = 400 }
+        returnTransition = Slide(Gravity.END).apply { duration = 300 }
         disableTransitionOverlap()
     }
 

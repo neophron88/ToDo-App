@@ -8,9 +8,9 @@ import org.rasulov.todoapp.databinding.TodoItemBinding
 import java.lang.IllegalStateException
 
 class ToDoHolder(
-    val bnd: TodoItemBinding,
+    val binding: TodoItemBinding,
     private val colorsForPriority: List<Int>
-) : RecyclerView.ViewHolder(bnd.root) {
+) : RecyclerView.ViewHolder(binding.root) {
 
     private var _todo: ToDo? = null
     val todo: ToDo
@@ -18,21 +18,17 @@ class ToDoHolder(
             "After onBindViewHolder field shouldn't be null"
         )
 
-    fun bind(todo: ToDo) {
-        bnd.apply {
-            _todo = todo
-            ViewCompat.setTransitionName(title, "${todo.id}title")
-            ViewCompat.setTransitionName(description, "${todo.id}description")
-            ViewCompat.setTransitionName(priorityIndicator, "${todo.id}priority")
-            title.text = todo.title
-            val color = colorsForPriority[todo.priority.ordinal - 1]
-            priorityIndicator.backgroundTintList = ColorStateList.valueOf(color)
-            description.text = todo.description
-        }
+    fun bind(todo: ToDo) = binding.apply {
+        _todo = todo
+        ViewCompat.setTransitionName(title, "${todo.id}title")
+        ViewCompat.setTransitionName(description, "${todo.id}description")
+        ViewCompat.setTransitionName(priorityIndicator, "${todo.id}priority")
+        title.text = todo.title
+        val color = colorsForPriority[todo.priority.ordinal - 1]
+        priorityIndicator.backgroundTintList = ColorStateList.valueOf(color)
+        description.text = todo.description
     }
-
-
 }
 
-fun RecyclerView.ViewHolder.toToDoHolder() = this as ToDoHolder
+fun RecyclerView.ViewHolder.asToDoHolder() = this as ToDoHolder
 
