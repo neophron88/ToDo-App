@@ -4,7 +4,6 @@ package org.rasulov.utilities.fragment
 
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import kotlin.reflect.KProperty
 
@@ -16,7 +15,7 @@ import kotlin.reflect.KProperty
  *
  * When using this delegate make sure that the Fragment was inherited from
  * Fragment(@LayoutRes int contentLayoutId) with providing your layout in constructor or
- * create as usual in onCreateView method in order to viewBinding delegate will be able
+ * create as usual in onCreateView method in order to viewBinding's delegate will be able
  * to bind to the view on its own.
  *
  *
@@ -34,7 +33,7 @@ class LazyFragmentsViewBinding<VB>(
 ) {
 
     private var binding: VB? = null
-    private var lifecycleOwner: LifecycleOwner? = null
+    private var currentView: View? = null
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): VB {
         checkLifeCycle()
@@ -42,18 +41,17 @@ class LazyFragmentsViewBinding<VB>(
     }
 
     private fun checkLifeCycle() {
-        val viewLifecycleOwner = fragment.viewLifecycleOwner
-        if (this.lifecycleOwner !== viewLifecycleOwner) {
+        val view = fragment.view ?: throw IllegalStateException(
+            "Don't access viewBinding when the Fragment's View is null i.e., " +
+                    "before onViewCreated() or after onDestroyView()"
+        )
 
-            val view = fragment.view ?: throw IllegalStateException(
-                "Don't access viewBinding when the Fragment's View is null i.e., " +
-                        "before onViewCreated() or after onDestroyView()"
-            )
-
-            this.lifecycleOwner = viewLifecycleOwner
+        if (this.currentView !== view) {
+            this.currentView = view
             val bind = VBClazz.getMethod("bind", View::class.java)
             val bindingObj = bind.invoke(null, view)
             binding = bindingObj as VB
         }
     }
+
 }
