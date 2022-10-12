@@ -1,7 +1,9 @@
 package org.rasulov.todoapp.presentation.fragments.list
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
@@ -28,20 +30,26 @@ import org.rasulov.todoapp.presentation.fragments.list.adapter.asToDoHolder
 import org.rasulov.todoapp.presentation.fragments.update.entities.ToDoParcel
 import org.rasulov.todoapp.presentation.utils.*
 import org.rasulov.utilities.fragment.addMenuProvider
-import org.rasulov.utilities.fragment.disableTransitionOverlap
 import org.rasulov.utilities.fragment.repeatWhenViewStarted
 import org.rasulov.utilities.fragment.viewBindings
 import org.rasulov.utilities.lifecycle.postDelayed
 import org.rasulov.utilities.recyclerview.setSwipeItem
 
 @AndroidEntryPoint
-class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListener {
+class ListFragment : Fragment(), ToDoAdapter.OnClickListener {
 
     private val viewModel: ListViewModel by viewModels()
 
     private val binding: FragmentListBinding by viewBindings()
 
     private val controller by lazy { findNavController() }
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.fragment_list, container, false)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -148,4 +156,5 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
             )
         )
     }
+
 }

@@ -1,11 +1,9 @@
 package org.rasulov.todoapp.presentation.fragments.update
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -59,13 +57,12 @@ class UpdateFragment : Fragment(R.layout.fragment_update) {
 
     }
 
-    private fun setUpViews() {
-        binding.toDoViews.apply {
-            edtTitle.setText(args.item.title)
-            spinnerPriority.setSelection(args.item.priority.ordinal - 1)
-            edtDescription.setText(args.item.description)
-        }
+    private fun setUpViews() = binding.toDoViews.apply {
+        edtTitle.setText(args.item.title)
+        spinnerPriority.setSelection(args.item.priority.ordinal - 1)
+        edtDescription.setText(args.item.description)
     }
+
 
     private fun addMenu() = addMenuProvider(
         menuRes = R.menu.update_fragment,
@@ -79,13 +76,11 @@ class UpdateFragment : Fragment(R.layout.fragment_update) {
     )
 
 
-    private fun getToDo(): ToDo {
-        binding.toDoViews.apply {
-            val title = edtTitle.text.toString()
-            val priority = Priority.values()[spinnerPriority.selectedItemPosition + 1]
-            val description = edtDescription.text.toString()
-            return ToDo(args.item.id, title, priority, description)
-        }
+    private fun getToDo(): ToDo = with(binding.toDoViews) {
+        val title = edtTitle.text.toString()
+        val priority = Priority.values()[spinnerPriority.selectedItemPosition + 1]
+        val description = edtDescription.text.toString()
+        return ToDo(args.item.id, title, priority, description)
     }
 
     private fun setSpinnerOnItemSelected() {
@@ -99,18 +94,10 @@ class UpdateFragment : Fragment(R.layout.fragment_update) {
 
     private fun observeUiEvent() = viewModel.uiEvent.observe(viewLifecycleOwner) {
         when (it) {
-            EmptyField -> showToast()
+            EmptyField -> showLongToast("The Title field is empty")
             OperationSuccess -> controller.popBackStack()
             else -> throw IllegalStateException("$it event is not handled here!")
         }
-    }
-
-    private fun showToast() {
-        Toast.makeText(
-            requireContext().applicationContext,
-            "The Title field is empty",
-            Toast.LENGTH_LONG
-        ).show()
     }
 
 }

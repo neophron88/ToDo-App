@@ -1,11 +1,9 @@
 package org.rasulov.todoapp.presentation.fragments.add
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -65,13 +63,11 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         }
     )
 
-    private fun getToDo(): ToDo {
-        binding.toDoViews.apply {
-            val title = edtTitle.text.toString()
-            val priority = Priority.values()[spinnerPriority.selectedItemPosition + 1]
-            val description = edtDescription.text.toString()
-            return ToDo(ToDo.DEFAULT, title, priority, description)
-        }
+    private fun getToDo(): ToDo = with(binding.toDoViews) {
+        val title = edtTitle.text.toString()
+        val priority = Priority.values()[spinnerPriority.selectedItemPosition + 1]
+        val description = edtDescription.text.toString()
+        return ToDo(ToDo.DEFAULT, title, priority, description)
     }
 
 
@@ -86,21 +82,13 @@ class AddFragment : Fragment(R.layout.fragment_add) {
     }
 
 
-    private fun observeUiEvent() {
-        viewModel.uiEvent.observe(viewLifecycleOwner) {
-            when (it) {
-                EmptyField -> showToast()
-                OperationSuccess -> controller.popBackStack()
-                else -> throw IllegalStateException("$it event is not handled here!")
-            }
+    private fun observeUiEvent() = viewModel.uiEvent.observe(viewLifecycleOwner) {
+        when (it) {
+            EmptyField -> showLongToast("The Title field is empty")
+            OperationSuccess -> controller.popBackStack()
+            else -> throw IllegalStateException("$it event is not handled here!")
         }
     }
 
-    private fun showToast() {
-        Toast.makeText(
-            requireContext().applicationContext,
-            "The Title field is empty",
-            Toast.LENGTH_LONG
-        ).show()
-    }
+
 }

@@ -6,7 +6,7 @@ import androidx.viewbinding.ViewBinding
 
 
 /**
- * A delegate that provide your viewbinding class within the Activity by lazy.
+ * A delegate that provide your viewbinding class within an Activity by lazy.
  **/
 inline fun <reified VB : ViewBinding> ComponentActivity.viewBindings() = lazy {
     val clazz: Class<VB> = VB::class.java

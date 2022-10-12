@@ -4,10 +4,12 @@ import android.content.Context
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.annotation.ArrayRes
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import org.rasulov.todoapp.domain.entities.Priority
 import org.rasulov.todoapp.domain.entities.AppSettings
@@ -61,5 +63,13 @@ fun SearchView.setOnQueryListener(onQueryListener: OnQueryListener) {
 
 fun ListViewModel.setPriority(priority: Priority) {
     setSettings(AppSettings(priority))
+}
+
+fun Fragment.showLongToast(text: String) {
+    Toast.makeText(
+        requireContext().applicationContext,
+        text,
+        Toast.LENGTH_LONG
+    ).show()
 }
 

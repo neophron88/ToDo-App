@@ -13,14 +13,8 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-typealias OnMenuItemSelected = (item: MenuItem) -> Unit
-typealias OnCreateMenu = (menu: Menu) -> Unit
-typealias OnPrepareMenu = (menu: Menu) -> Unit
-
-
 inline val Fragment.viewLifeCycleScope: LifecycleCoroutineScope
     get() = viewLifecycleOwner.lifecycleScope
-
 
 suspend fun Fragment.repeatOnViewLifeCycle(
     state: Lifecycle.State,
@@ -32,6 +26,11 @@ suspend fun Fragment.repeatOnViewLifeCycle(
 fun Fragment.repeatWhenViewStarted(block: suspend CoroutineScope.() -> Unit) {
     viewLifeCycleScope.launch { repeatOnViewLifeCycle(Lifecycle.State.STARTED, block) }
 }
+
+
+typealias OnMenuItemSelected = (item: MenuItem) -> Unit
+typealias OnCreateMenu = (menu: Menu) -> Unit
+typealias OnPrepareMenu = (menu: Menu) -> Unit
 
 
 fun Fragment.addMenuProvider(

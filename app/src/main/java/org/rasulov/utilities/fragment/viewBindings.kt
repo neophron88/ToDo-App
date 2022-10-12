@@ -10,12 +10,14 @@ import kotlin.reflect.KProperty
 
 
 /**
- * A delegate that provide your viewbinding class within the Fragment by lazy.
+ * A delegate that provide your viewbinding class within a Fragment by lazy.
  *
  * The Delegate considers the fragment's view lifecycle.
  *
- * When using this delegate make sure that your Fragment was inherited from
- * Fragment(@LayoutRes int contentLayoutId) with providing your layout in constructor.
+ * When using this delegate make sure that the Fragment was inherited from
+ * Fragment(@LayoutRes int contentLayoutId) with providing your layout in constructor or
+ * create as usual in onCreateView method in order to viewBinding delegate will be able
+ * to bind to the view on its own.
  *
  *
  * Note that accessing viewBinding while fragment's view is
@@ -32,7 +34,7 @@ class LazyFragmentsViewBinding<VB>(
 ) {
 
     private var binding: VB? = null
-    private var viewLifecycleOwner: LifecycleOwner? = null
+    private var lifecycleOwner: LifecycleOwner? = null
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): VB {
         checkLifeCycle()
@@ -40,17 +42,17 @@ class LazyFragmentsViewBinding<VB>(
     }
 
     private fun checkLifeCycle() {
-        if (viewLifecycleOwner !== fragment.viewLifecycleOwner) {
+        val viewLifecycleOwner = fragment.viewLifecycleOwner
+        if (this.lifecycleOwner !== viewLifecycleOwner) {
 
-            fragment.view
-                ?: throw IllegalStateException(
-                    "Don't access the ViewBinding when the Fragment's View is null i.e., " +
-                            "before onViewCreated() or after onDestroyView()"
-                )
+            val view = fragment.view ?: throw IllegalStateException(
+                "Don't access viewBinding when the Fragment's View is null i.e., " +
+                        "before onViewCreated() or after onDestroyView()"
+            )
 
-            viewLifecycleOwner = fragment.viewLifecycleOwner
+            this.lifecycleOwner = viewLifecycleOwner
             val bind = VBClazz.getMethod("bind", View::class.java)
-            val bindingObj = bind.invoke(null, fragment.view)
+            val bindingObj = bind.invoke(null, view)
             binding = bindingObj as VB
         }
     }
