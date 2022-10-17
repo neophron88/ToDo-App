@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import org.rasulov.utilities.lifecycle.observer.MutableSingleUseData
 import org.rasulov.utilities.lifecycle.observer.toSingleUseData
 import org.rasulov.todoapp.domain.EmptyFieldException
-import org.rasulov.todoapp.domain.Repository
+import org.rasulov.todoapp.domain.ToDoRepository
 import org.rasulov.todoapp.domain.entities.ToDo
 import org.rasulov.todoapp.presentation.utils.EmptyField
 import org.rasulov.todoapp.presentation.utils.OperationSuccess
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddViewModel @Inject constructor(
-    private val repository: Repository
+    private val toDoRepository: ToDoRepository
 ) : ViewModel() {
 
     private val _uiEvent = MutableSingleUseData<UIEvent>()
@@ -24,7 +24,7 @@ class AddViewModel @Inject constructor(
 
     fun addToDo(toDo: ToDo) = viewModelScope.launch {
         try {
-            repository.addToDo(toDo)
+            toDoRepository.addToDo(toDo)
             _uiEvent.value = OperationSuccess
         } catch (e: EmptyFieldException) {
             _uiEvent.value = EmptyField

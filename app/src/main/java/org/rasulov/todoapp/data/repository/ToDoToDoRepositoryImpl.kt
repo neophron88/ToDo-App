@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import org.rasulov.todoapp.data.repository.entity.FindBy
 import org.rasulov.todoapp.data.sources.database.DataBaseToDoSource
 import org.rasulov.todoapp.data.sources.preference.PreferenceToDoSource
-import org.rasulov.todoapp.domain.Repository
+import org.rasulov.todoapp.domain.ToDoRepository
 import org.rasulov.todoapp.domain.entities.AppSettings
 import org.rasulov.todoapp.domain.entities.ToDo
 import org.rasulov.todoapp.domain.entities.ToDoSearchBy
@@ -20,10 +20,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ToDoRepository @Inject constructor(
+class ToDoToDoRepositoryImpl @Inject constructor(
     private val database: DataBaseToDoSource,
     private val preference: PreferenceToDoSource
-) : Repository {
+) : ToDoRepository {
 
     private val searchBy = MutableLiveData(ToDoSearchBy())
 

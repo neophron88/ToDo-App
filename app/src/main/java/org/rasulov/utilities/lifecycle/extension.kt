@@ -2,9 +2,8 @@ package org.rasulov.utilities.lifecycle
 
 import android.os.Handler
 import android.os.Looper
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
+import android.util.Log
+import androidx.lifecycle.*
 
 
 fun LifecycleOwner.postDelayed(delayMillis: Long = 0, run: () -> Unit) {
@@ -12,7 +11,7 @@ fun LifecycleOwner.postDelayed(delayMillis: Long = 0, run: () -> Unit) {
 
     class Link {
         lateinit var runnable: Runnable
-        lateinit var observer: LifecycleEventObserver
+        lateinit var observer: LifecycleObserver
     }
 
     val link = Link()
@@ -22,8 +21,8 @@ fun LifecycleOwner.postDelayed(delayMillis: Long = 0, run: () -> Unit) {
         this.lifecycle.removeObserver(link.observer)
     }
 
-    link.observer = LifecycleEventObserver { _, event ->
-        if (event.targetState == Lifecycle.State.DESTROYED) {
+    link.observer = object : DefaultLifecycleObserver {
+        override fun onDestroy(owner: LifecycleOwner) {
             handler.removeCallbacks(link.runnable)
         }
     }

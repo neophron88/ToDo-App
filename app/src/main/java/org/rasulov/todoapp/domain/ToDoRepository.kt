@@ -5,7 +5,7 @@ import org.rasulov.todoapp.domain.entities.AppSettings
 import org.rasulov.todoapp.domain.entities.ToDo
 import org.rasulov.todoapp.domain.entities.ToDoSearchBy
 
-interface Repository {
+interface ToDoRepository {
 
     fun getAllToDos(): Flow<List<ToDo>>
 

@@ -4,14 +4,14 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.rasulov.todoapp.data.repository.ToDoRepository
-import org.rasulov.todoapp.domain.Repository
+import org.rasulov.todoapp.data.repository.ToDoToDoRepositoryImpl
+import org.rasulov.todoapp.domain.ToDoRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
 interface DataModule {
 
     @Binds
-    fun bindToDoRepository(impl:ToDoRepository):Repository
+    fun bindToDoRepository(impl:ToDoToDoRepositoryImpl):ToDoRepository
 
 }

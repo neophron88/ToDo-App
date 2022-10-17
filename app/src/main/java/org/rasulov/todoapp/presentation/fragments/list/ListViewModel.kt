@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.rasulov.todoapp.domain.Repository
+import org.rasulov.todoapp.domain.ToDoRepository
 import org.rasulov.todoapp.domain.entities.AppSettings
 import org.rasulov.todoapp.domain.entities.ToDo
 import org.rasulov.todoapp.domain.entities.ToDoSearchBy
@@ -18,11 +18,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
-    private val repository: Repository
+    private val toDoRepository: ToDoRepository
 ) : ViewModel() {
 
 
-    val uiState: Flow<UiState<ToDo>> = repository.getAllToDos()
+    val uiState: Flow<UiState<ToDo>> = toDoRepository.getAllToDos()
         .map { UiState(data = it) }
         .stateInLazily(UiState(isLoading = true))
 
@@ -32,26 +32,26 @@ class ListViewModel @Inject constructor(
 
 
     fun deleteToDo(todo: ToDo) = viewModelScope.launch {
-        repository.deleteToDo(todo.id)
+        toDoRepository.deleteToDo(todo.id)
         _uiEvent.value = CanBeRestored(todo)
 
     }
 
     fun addToDO(todo: ToDo) = viewModelScope.launch {
-        repository.addToDo(todo)
+        toDoRepository.addToDo(todo)
     }
 
 
     fun setSearchBy(searchBy: ToDoSearchBy) {
-        repository.setSearchBy(searchBy)
+        toDoRepository.setSearchBy(searchBy)
     }
 
     fun setSettings(appSettings: AppSettings) = viewModelScope.launch {
-        repository.setSettings(appSettings)
+        toDoRepository.setSettings(appSettings)
     }
 
     fun deleteAllToDos() = viewModelScope.launch {
-        repository.deleteAllToDos()
+        toDoRepository.deleteAllToDos()
     }
 
     private fun <T> Flow<T>.stateInLazily(initialValue: T): StateFlow<T> {
