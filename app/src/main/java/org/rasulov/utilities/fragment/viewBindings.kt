@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST")
+@file:Suppress("UNCHECKED_CAST", "unused")
 
 package org.rasulov.utilities.fragment
 
@@ -10,7 +10,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
-
 
 /**
  * A delegate that provide your viewbinding within a Fragment by lazy.
@@ -35,16 +34,17 @@ class LazyFragmentsViewBinding<VB : ViewBinding>(
     private val VBClazz: Class<VB>,
 ) : ReadOnlyProperty<Fragment, VB> {
 
+
     private var binding: VB? = null
 
 
-    override operator fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
-        tryToBind(thisRef)
-        return binding!!
-    }
+    override operator fun getValue(
+        thisRef: Fragment,
+        property: KProperty<*>
+    ): VB = binding ?: tryToBind(thisRef)
 
-    private fun tryToBind(fragment: Fragment) {
-        if (binding != null) return
+
+    private fun tryToBind(fragment: Fragment): VB {
 
         val error = IllegalStateException(
             "Don't access viewBinding before onViewCreated() or after onDestroyView() inclusive"
@@ -54,16 +54,14 @@ class LazyFragmentsViewBinding<VB : ViewBinding>(
         val lifecycle = fragment.viewLifecycleOwner.lifecycle
         if (lifecycle.currentState == Lifecycle.State.DESTROYED) throw error
 
-
         lifecycle.addObserver(object : DefaultLifecycleObserver {
-            override fun onDestroy(owner: LifecycleOwner) {
-                binding = null
-            }
+            override fun onDestroy(owner: LifecycleOwner) { binding = null }
         })
 
         val bindMethod = VBClazz.getMethod("bind", View::class.java)
-        val viewBinding = bindMethod.invoke(null, view)
-        binding = viewBinding as VB
+        val viewBinding = bindMethod.invoke(null, view) as VB
+        binding = viewBinding
+        return viewBinding
     }
 
 }

@@ -1,7 +1,9 @@
 package org.rasulov.todoapp.presentation.fragments.list
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
@@ -70,11 +72,11 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
         list.setSwipeItem { holder, _ -> viewModel.deleteToDo(holder.asToDoHolder().todo) }
     }
 
-    private fun setUpFloatingAction() {
+    private fun setUpFloatingAction() =
         binding.floatingActionButton.setOnClickListener {
             controller.navigate(R.id.action_listFragment_to_addFragment)
         }
-    }
+
 
     private fun addMenuProvider() = addMenuProvider(
         menuRes = R.menu.list_fragment,
