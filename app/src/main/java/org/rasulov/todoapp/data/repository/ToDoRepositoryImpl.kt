@@ -20,7 +20,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ToDoToDoRepositoryImpl @Inject constructor(
+class ToDoRepositoryImpl @Inject constructor(
     private val database: DataBaseToDoSource,
     private val preference: PreferenceToDoSource
 ) : ToDoRepository {

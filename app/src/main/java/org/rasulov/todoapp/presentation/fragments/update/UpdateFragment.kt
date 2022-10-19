@@ -58,9 +58,10 @@ class UpdateFragment : Fragment(R.layout.fragment_update) {
     }
 
     private fun setUpViews() = binding.toDoViews.apply {
-        edtTitle.setText(args.item.title)
-        spinnerPriority.setSelection(args.item.priority.ordinal - 1)
-        edtDescription.setText(args.item.description)
+        val item = args.item
+        edtTitle.setText(item.title)
+        spinnerPriority.setSelection(item.priority.ordinal - 1)
+        edtDescription.setText(item.description)
     }
 
 
