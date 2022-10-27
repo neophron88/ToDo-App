@@ -18,7 +18,7 @@ import org.rasulov.todoapp.domain.entities.Priority
 import org.rasulov.todoapp.domain.entities.ToDo
 import org.rasulov.todoapp.presentation.utils.*
 import org.rasulov.todoapp.databinding.FragmentAddBinding
-import org.rasulov.utilities.primitives.dpToPixel
+import org.rasulov.utilities.primitives.dp
 
 @AndroidEntryPoint
 class AddFragment : Fragment(R.layout.fragment_add) {
@@ -71,10 +71,11 @@ class AddFragment : Fragment(R.layout.fragment_add) {
     }
 
 
+
     private fun setSpinnerOnItemSelected() {
         binding.toDoViews.spinnerPriority.setOnItemSelectedListener { item, position ->
             val drawable = getGradientDrawable(R.drawable.spinner_shape)
-            drawable.setStroke((2).dpToPixel(requireContext()), colors[position])
+            drawable.setStroke(2.dp(requireContext()), colors[position])
             (item as? TextView)?.setTextColor(colors[position])
             binding.toDoViews.spinnerPriority.background = drawable
 

@@ -58,9 +58,9 @@ class LazyFragmentsViewBinding<VB : ViewBinding>(
         })
 
         val bindMethod = VBClazz.getMethod("bind", View::class.java)
-        val viewBinding = bindMethod.invoke(null, view) as VB
-        binding = viewBinding
-        return viewBinding
+        val newBinding = bindMethod.invoke(null, view) as VB
+        binding = newBinding
+        return newBinding
     }
 
 }
