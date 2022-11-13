@@ -9,4 +9,6 @@ abstract class ItemViewHolder<I : Any>(
 
     abstract fun bind(item: I?)
 
+    open fun bind(item: I?, payloads: MutableList<Any>) {}
+
 }

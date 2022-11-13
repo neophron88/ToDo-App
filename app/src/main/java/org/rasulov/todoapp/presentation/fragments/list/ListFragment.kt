@@ -30,6 +30,7 @@ import org.rasulov.utilities.fragment.repeatWhenViewStarted
 import org.rasulov.utilities.fragment.viewBindings
 import org.rasulov.utilities.lifecycle.postDelayed
 import org.rasulov.utilities.recyclerview.setSwipeItem
+import org.rasulov.utilities.rv_adapter_delegate.DelegationAdapter
 import org.rasulov.utilities.rv_adapter_delegate.MediatorAdapterDelegate
 
 @AndroidEntryPoint
@@ -57,7 +58,7 @@ class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
 
         addMenuProvider()
 
-        viewLifecycleOwner.postDelayed(500) {
+        viewLifecycleOwner.postDelayed(5000) {
             observeUiState(adapter)
         }
 
@@ -68,7 +69,7 @@ class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
 
     private fun setUpRecyclerView(adapter: DelegationAdapter<Any>) = with(binding) {
         adapter.stateRestorationPolicy = PREVENT_WHEN_EMPTY
-        list.swapAdapter(adapter, false)
+        list.adapter = adapter
         list.itemAnimator = SlideInUpAnimator().apply { addDuration = 300 }
         list.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         list.setSwipeItem { holder, _ -> viewModel.deleteToDo(holder.asToDoHolder().todo) }

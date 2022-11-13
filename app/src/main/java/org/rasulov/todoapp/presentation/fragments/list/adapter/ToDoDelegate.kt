@@ -35,7 +35,6 @@ class ToDoItemDelegate(
         oldItem: ToDo, newItem: ToDo
     ): Boolean = oldItem == newItem
 
-
 }
 
 class ToDoHolder(
@@ -56,6 +55,7 @@ class ToDoHolder(
         priorityIndicator.backgroundTintList = ColorStateList.valueOf(color)
         description.text = item.description
     }
+
 }
 
 fun RecyclerView.ViewHolder.asToDoHolder() = this as ToDoHolder
