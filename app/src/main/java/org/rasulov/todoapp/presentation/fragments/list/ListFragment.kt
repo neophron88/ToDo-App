@@ -22,9 +22,7 @@ import org.rasulov.todoapp.databinding.FragmentListBinding
 import org.rasulov.todoapp.domain.entities.Priority
 import org.rasulov.todoapp.domain.entities.ToDo
 import org.rasulov.todoapp.domain.entities.ToDoSearchBy
-import org.rasulov.todoapp.presentation.fragments.list.adapter.ToDoAdapter
-import org.rasulov.todoapp.presentation.fragments.list.adapter.ToDoHolder
-import org.rasulov.todoapp.presentation.fragments.list.adapter.asToDoHolder
+import org.rasulov.todoapp.presentation.fragments.list.adapter.*
 import org.rasulov.todoapp.presentation.fragments.update.entities.ToDoParcel
 import org.rasulov.todoapp.presentation.utils.*
 import org.rasulov.utilities.fragment.addMenuProvider
@@ -32,9 +30,10 @@ import org.rasulov.utilities.fragment.repeatWhenViewStarted
 import org.rasulov.utilities.fragment.viewBindings
 import org.rasulov.utilities.lifecycle.postDelayed
 import org.rasulov.utilities.recyclerview.setSwipeItem
+import org.rasulov.utilities.rv_adapter_delegate.MediatorAdapterDelegate
 
 @AndroidEntryPoint
-class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListener {
+class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
 
     private val viewModel: ListViewModel by viewModels()
 
@@ -45,7 +44,12 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = ToDoAdapter(this, requireContext().getColors(R.array.colors))
+        val toDoDelegate = ToDoItemDelegate(this, requireContext().getColors(R.array.colors))
+
+        val mediator = MediatorAdapterDelegate.Builder<Any>()
+            .addItemDelegate(toDoDelegate).build()
+
+        val adapter = DelegationAdapter(mediator)
 
         setUpRecyclerView(adapter)
 
@@ -62,12 +66,13 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
     }
 
 
-    private fun setUpRecyclerView(adapter: ToDoAdapter) = with(binding) {
+    private fun setUpRecyclerView(adapter: DelegationAdapter<Any>) = with(binding) {
         adapter.stateRestorationPolicy = PREVENT_WHEN_EMPTY
-        list.adapter = adapter
+        list.swapAdapter(adapter, false)
         list.itemAnimator = SlideInUpAnimator().apply { addDuration = 300 }
         list.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         list.setSwipeItem { holder, _ -> viewModel.deleteToDo(holder.asToDoHolder().todo) }
+
     }
 
     private fun setUpFloatingAction() =
@@ -105,7 +110,7 @@ class ListFragment : Fragment(R.layout.fragment_list), ToDoAdapter.OnClickListen
     }
 
 
-    private fun observeUiState(adapter: ToDoAdapter) = repeatWhenViewStarted {
+    private fun observeUiState(adapter: DelegationAdapter<Any>) = repeatWhenViewStarted {
         viewModel.uiState.collectLatest {
             adapter.submitList(it.data)
             renderResult(it)
