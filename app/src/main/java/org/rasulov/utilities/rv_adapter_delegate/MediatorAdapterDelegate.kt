@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import kotlin.reflect.KClass
 
-class MediatorAdapterDelegate<I : Any> (
+class MediatorAdapterDelegate<I : Any>(
     delegates: List<ItemDelegate<out I>>
 ) {
 
@@ -63,6 +63,12 @@ class MediatorAdapterDelegate<I : Any> (
                 ?: throw error(oldClass)
         }
 
+        override fun getChangePayload(oldItem: I, newItem: I): Any? {
+            val oldClass = oldItem::class
+            if (oldClass != newItem::class) return false
+            val delegate = delegateByClass[oldClass] ?: throw error(oldClass)
+            return delegate.getChangePayload(oldItem, newItem)
+        }
     }
 
     fun error(klass: KClass<out I>): IllegalStateException {

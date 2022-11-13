@@ -10,7 +10,6 @@ class DelegationAdapter<I : Any>(
 ) : ListAdapter<I, ItemViewHolder<I>>(mediator.diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder<I> {
-        Log.d("it0088", "onCreateViewHolder: ")
         return mediator.onCreateViewHolder(parent, viewType)
     }
 

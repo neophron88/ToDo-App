@@ -17,4 +17,6 @@ abstract class ItemDelegate<I : Any>(
 
     abstract fun areContentsTheSame(oldItem: I, newItem: I): Boolean
 
+    open fun getChangePayload(oldItem: I, newItem: I): Any? = null
+
 }

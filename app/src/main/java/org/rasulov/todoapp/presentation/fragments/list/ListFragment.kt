@@ -58,14 +58,13 @@ class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
 
         addMenuProvider()
 
-        viewLifecycleOwner.postDelayed(5000) {
+        viewLifecycleOwner.postDelayed(500) {
             observeUiState(adapter)
         }
 
         observeUiEvent()
 
     }
-
 
     private fun setUpRecyclerView(adapter: DelegationAdapter<Any>) = with(binding) {
         adapter.stateRestorationPolicy = PREVENT_WHEN_EMPTY

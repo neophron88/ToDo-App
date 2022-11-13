@@ -35,6 +35,7 @@ class ToDoItemDelegate(
         oldItem: ToDo, newItem: ToDo
     ): Boolean = oldItem == newItem
 
+
 }
 
 class ToDoHolder(
