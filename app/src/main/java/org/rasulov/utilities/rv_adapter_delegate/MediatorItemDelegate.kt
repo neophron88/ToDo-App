@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import kotlin.reflect.KClass
 
-class MediatorAdapterDelegate<I : Any>(
+class MediatorItemDelegate<I : Any> private constructor(
     delegates: List<ItemDelegate<out I>>
 ) {
 
@@ -32,14 +32,10 @@ class MediatorAdapterDelegate<I : Any>(
 
     }
 
-    fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder<I> {
+    fun createViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder<I> {
         val inflater = LayoutInflater.from(parent.context)
         return delegateByViewType[viewType].createViewHolder(inflater, parent)
 
-    }
-
-    fun onBindViewHolder(holder: ItemViewHolder<I>, item: I?) {
-        holder.bind(item)
     }
 
     fun getItemViewType(item: I): Int {
@@ -86,7 +82,7 @@ class MediatorAdapterDelegate<I : Any>(
             return this
         }
 
-        fun build() = MediatorAdapterDelegate(delegates)
+        fun build() = MediatorItemDelegate(delegates)
     }
 
 }

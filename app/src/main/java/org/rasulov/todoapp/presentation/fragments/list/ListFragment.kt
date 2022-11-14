@@ -30,8 +30,8 @@ import org.rasulov.utilities.fragment.repeatWhenViewStarted
 import org.rasulov.utilities.fragment.viewBindings
 import org.rasulov.utilities.lifecycle.postDelayed
 import org.rasulov.utilities.recyclerview.setSwipeItem
-import org.rasulov.utilities.rv_adapter_delegate.DelegationAdapter
-import org.rasulov.utilities.rv_adapter_delegate.MediatorAdapterDelegate
+import org.rasulov.utilities.rv_adapter_delegate.ItemsAdapter
+import org.rasulov.utilities.rv_adapter_delegate.MediatorItemDelegate
 
 @AndroidEntryPoint
 class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
@@ -45,16 +45,11 @@ class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val toDoDelegate = ToDoItemDelegate(this, requireContext().getColors(R.array.colors))
+        val adapter = setupAdapter()
 
-        val mediator = MediatorAdapterDelegate.Builder<Any>()
-            .addItemDelegate(toDoDelegate).build()
+        setupRecyclerView(adapter)
 
-        val adapter = DelegationAdapter(mediator)
-
-        setUpRecyclerView(adapter)
-
-        setUpFloatingAction()
+        setupFloatingAction()
 
         addMenuProvider()
 
@@ -66,8 +61,20 @@ class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
 
     }
 
-    private fun setUpRecyclerView(adapter: DelegationAdapter<Any>) = with(binding) {
-        adapter.stateRestorationPolicy = PREVENT_WHEN_EMPTY
+    private fun setupAdapter(): ItemsAdapter<Any> {
+        val toDoDelegate = ToDoItemDelegate(this, requireContext().getColors(R.array.colors))
+
+        val mediator = MediatorItemDelegate.Builder<Any>()
+            .addItemDelegate(toDoDelegate)
+            .build()
+
+        val adapter = ItemsAdapter(mediator).also {
+            it.stateRestorationPolicy = PREVENT_WHEN_EMPTY
+        }
+        return adapter
+    }
+
+    private fun setupRecyclerView(adapter: ItemsAdapter<Any>) = with(binding) {
         list.adapter = adapter
         list.itemAnimator = SlideInUpAnimator().apply { addDuration = 300 }
         list.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
@@ -75,7 +82,7 @@ class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
 
     }
 
-    private fun setUpFloatingAction() =
+    private fun setupFloatingAction() =
         binding.floatingActionButton.setOnClickListener {
             controller.navigate(R.id.action_listFragment_to_addFragment)
         }
@@ -110,7 +117,7 @@ class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
     }
 
 
-    private fun observeUiState(adapter: DelegationAdapter<Any>) = repeatWhenViewStarted {
+    private fun observeUiState(adapter: ItemsAdapter<Any>) = repeatWhenViewStarted {
         viewModel.uiState.collectLatest {
             adapter.submitList(it.data)
             renderResult(it)

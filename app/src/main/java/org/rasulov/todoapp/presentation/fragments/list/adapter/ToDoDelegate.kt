@@ -9,7 +9,6 @@ import org.rasulov.todoapp.domain.entities.ToDo
 import org.rasulov.todoapp.databinding.TodoItemBinding
 import org.rasulov.utilities.rv_adapter_delegate.ItemDelegate
 import org.rasulov.utilities.rv_adapter_delegate.ItemViewHolder
-import java.lang.IllegalStateException
 
 
 class ToDoItemDelegate(
@@ -35,7 +34,6 @@ class ToDoItemDelegate(
         oldItem: ToDo, newItem: ToDo
     ): Boolean = oldItem == newItem
 
-
 }
 
 class ToDoHolder(
@@ -45,9 +43,8 @@ class ToDoHolder(
 
     lateinit var todo: ToDo
 
-    override fun bind(it: ToDo?) = with(binding) {
-        val item = it ?: return@with
-        todo = item
+    override fun bind(item: ToDo?) = with(binding) {
+        todo = item ?: return
         ViewCompat.setTransitionName(title, "${item.id}title")
         ViewCompat.setTransitionName(description, "${item.id}description")
         ViewCompat.setTransitionName(priorityIndicator, "${item.id}priority")
