@@ -16,6 +16,8 @@ import kotlinx.coroutines.launch
 inline val Fragment.viewLifeCycleScope: LifecycleCoroutineScope
     get() = viewLifecycleOwner.lifecycleScope
 
+
+
 suspend fun Fragment.repeatOnViewLifeCycle(
     state: Lifecycle.State,
     block: suspend CoroutineScope.() -> Unit
