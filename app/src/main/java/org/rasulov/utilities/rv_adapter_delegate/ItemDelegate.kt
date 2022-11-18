@@ -1,22 +1,15 @@
 package org.rasulov.utilities.rv_adapter_delegate
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.view.View
+import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.DiffUtil
 import kotlin.reflect.KClass
 
-abstract class ItemDelegate<I : Any>(
-    val itemClass: KClass<I>
-) {
+typealias ItemViewHolderProducer<I> = (view: View) -> ItemViewHolder<I>
 
-    abstract fun createViewHolder(
-        layoutInflater: LayoutInflater,
-        parent: ViewGroup
-    ): ItemViewHolder<I>
-
-    abstract fun areItemsTheSame(oldItem: I, newItem: I): Boolean
-
-    abstract fun areContentsTheSame(oldItem: I, newItem: I): Boolean
-
-    open fun getChangePayload(oldItem: I, newItem: I): Any? = null
-
-}
+class ItemDelegate<I : Any>(
+    val itemClass: KClass<I>,
+    @LayoutRes val layout: Int,
+    val diffUtil: DiffUtil.ItemCallback<I>,
+    val viewHolderProducer: ItemViewHolderProducer<I>
+)

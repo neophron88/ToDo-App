@@ -2,14 +2,12 @@ package org.rasulov.todoapp.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.ui.setupActionBarWithNavController
 import dagger.hilt.android.AndroidEntryPoint
-import org.rasulov.todoapp.App
-import org.rasulov.utilities.activity.viewBindings
 import org.rasulov.todoapp.R
-import org.rasulov.todoapp.presentation.utils.navControllers
 import org.rasulov.todoapp.databinding.ActivityMainBinding
+import org.rasulov.todoapp.presentation.utils.navControllers
+import org.rasulov.utilities.activity.viewBindings
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

@@ -7,8 +7,23 @@ abstract class ItemViewHolder<I : Any>(
     view: View
 ) : RecyclerView.ViewHolder(view) {
 
-    abstract fun bind(item: I?)
+    lateinit var item: I
 
-    open fun bind(item: I?, payloads: MutableList<Any>) {}
+    internal fun bind(item: I) {
+        this.item = item
+        onBind(item)
+    }
+
+    internal fun bind(item: I, payloads: MutableList<Any>) {
+        this.item = item
+        onBind(item, payloads)
+    }
+
+
+    abstract fun onBind(item: I)
+
+    open fun onBind(item: I, payloads: MutableList<Any>) {}
+
+    open fun unBind() {}
 
 }

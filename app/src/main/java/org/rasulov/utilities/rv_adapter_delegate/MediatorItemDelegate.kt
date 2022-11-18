@@ -22,19 +22,21 @@ class MediatorItemDelegate<I : Any> private constructor(
 
     private fun configureViewType(
         delegates: List<ItemDelegate<I>>
-    ) = delegates.forEachIndexed { indexAsViewType, itemDelegate ->
+    ) = delegates.forEach { itemDelegate ->
 
-        delegateByViewType.put(indexAsViewType, itemDelegate)
+        delegateByViewType.put(itemDelegate.layout, itemDelegate)
 
         val kClass = itemDelegate.itemClass
-        viewTypeByClass[kClass] = indexAsViewType
+        viewTypeByClass[kClass] = itemDelegate.layout
         delegateByClass[kClass] = itemDelegate
 
     }
 
     fun createViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder<I> {
         val inflater = LayoutInflater.from(parent.context)
-        return delegateByViewType[viewType].createViewHolder(inflater, parent)
+        val itemDelegate = delegateByViewType[viewType]
+        val view = inflater.inflate(itemDelegate.layout, parent, false)
+        return itemDelegate.viewHolderProducer(view)
 
     }
 
@@ -45,39 +47,37 @@ class MediatorItemDelegate<I : Any> private constructor(
     }
 
     val diffUtil = object : DiffUtil.ItemCallback<I>() {
+
         override fun areItemsTheSame(oldItem: I, newItem: I): Boolean {
             val oldClass = oldItem::class
             if (oldClass != newItem::class) return false
-            return delegateByClass[oldClass]?.areItemsTheSame(oldItem, newItem)
-                ?: throw error(oldClass)
+            val diffUtil = delegateByClass[oldClass]?.diffUtil ?: throw error(oldClass)
+            return diffUtil.areItemsTheSame(oldItem, newItem)
         }
 
         override fun areContentsTheSame(oldItem: I, newItem: I): Boolean {
             val oldClass = oldItem::class
             if (oldClass != newItem::class) return false
-            return delegateByClass[oldClass]?.areContentsTheSame(oldItem, newItem)
-                ?: throw error(oldClass)
+            val diffUtil = delegateByClass[oldClass]?.diffUtil ?: throw error(oldClass)
+            return diffUtil.areContentsTheSame(oldItem, newItem)
         }
 
         override fun getChangePayload(oldItem: I, newItem: I): Any? {
             val oldClass = oldItem::class
             if (oldClass != newItem::class) return false
-            val delegate = delegateByClass[oldClass] ?: throw error(oldClass)
-            return delegate.getChangePayload(oldItem, newItem)
+            val diffUtil = delegateByClass[oldClass]?.diffUtil ?: throw error(oldClass)
+            return diffUtil.getChangePayload(oldItem, newItem)
         }
     }
 
-    fun error(klass: KClass<out I>): IllegalStateException {
-        return IllegalStateException(
-            "Can not find ItemDelegate for ${klass.simpleName} class "
-        )
-    }
+    fun error(klass: KClass<out I>) = IllegalStateException(
+        "Can not find ItemDelegate for ${klass.simpleName} class"
+    )
 
+    class Builder {
+        private val delegates = mutableListOf<ItemDelegate<out Any>>()
 
-    class Builder<I : Any> {
-        private val delegates = mutableListOf<ItemDelegate<out I>>()
-
-        fun addItemDelegate(item: ItemDelegate<out I>): Builder<I> {
+        fun addItemDelegate(item: ItemDelegate<out Any>): Builder {
             delegates.add(item)
             return this
         }

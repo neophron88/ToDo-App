@@ -11,7 +11,6 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,8 +29,9 @@ import org.rasulov.utilities.fragment.repeatWhenViewStarted
 import org.rasulov.utilities.fragment.viewBindings
 import org.rasulov.utilities.lifecycle.postDelayed
 import org.rasulov.utilities.recyclerview.setSwipeItem
+import org.rasulov.utilities.rv_adapter_delegate.ItemDelegate
+import org.rasulov.utilities.rv_adapter_delegate.ItemDiffUtil
 import org.rasulov.utilities.rv_adapter_delegate.ItemsAdapter
-import org.rasulov.utilities.rv_adapter_delegate.MediatorItemDelegate
 
 @AndroidEntryPoint
 class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
@@ -61,23 +61,31 @@ class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
 
     }
 
-    private fun setupAdapter(): ItemsAdapter<Any> {
-        val toDoDelegate = ToDoItemDelegate(this, requireContext().getColors(R.array.colors))
+    private fun setupAdapter(): ItemsAdapter {
+        val toDoDelegate = ItemDelegate(
+            itemClass = ToDo::class,
+            layout = R.layout.todo_item,
+            diffUtil = ItemDiffUtil(itemsTheSamePointer = ToDo::id),
+            viewHolderProducer = {
+                ToDoHolder(
+                    it,
+                    requireContext().getColors(R.array.colors),
+                    this
+                )
+            }
+        )
 
-        val mediator = MediatorItemDelegate.Builder<Any>()
-            .addItemDelegate(toDoDelegate)
-            .build()
-
-        val adapter = ItemsAdapter(mediator).also {
+        val adapter = ItemsAdapter(toDoDelegate).also {
             it.stateRestorationPolicy = PREVENT_WHEN_EMPTY
         }
         return adapter
     }
 
-    private fun setupRecyclerView(adapter: ItemsAdapter<Any>) = with(binding) {
+    private fun setupRecyclerView(adapter: ItemsAdapter) = with(binding) {
         list.adapter = adapter
         list.itemAnimator = SlideInUpAnimator().apply { addDuration = 300 }
-        list.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        list.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         list.setSwipeItem { holder, _ -> viewModel.deleteToDo(holder.asToDoHolder().todo) }
 
     }
@@ -117,7 +125,7 @@ class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
     }
 
 
-    private fun observeUiState(adapter: ItemsAdapter<Any>) = repeatWhenViewStarted {
+    private fun observeUiState(adapter: ItemsAdapter) = repeatWhenViewStarted {
         viewModel.uiState.collectLatest {
             adapter.submitList(it.data)
             renderResult(it)
