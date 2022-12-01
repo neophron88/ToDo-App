@@ -1,9 +1,7 @@
-package org.rasulov.todoapp.presentation.fragments.list.adapter
+package org.rasulov.todoapp.presentation.fragments.list.viewholders
 
 import android.content.res.ColorStateList
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.rasulov.todoapp.domain.entities.ToDo
@@ -18,14 +16,10 @@ class ToDoHolder(
 ) : ItemViewHolder<ToDo>(view) {
 
     val binding = TodoItemBinding.bind(view)
-    lateinit var todo: ToDo
 
-    init {
-        setupOnClickListener()
-    }
+    init { setupOnClickListener() }
 
     override fun onBind(item: ToDo) = with(binding) {
-        todo = item
         ViewCompat.setTransitionName(title, "${item.id}title")
         ViewCompat.setTransitionName(description, "${item.id}description")
         ViewCompat.setTransitionName(priorityIndicator, "${item.id}priority")

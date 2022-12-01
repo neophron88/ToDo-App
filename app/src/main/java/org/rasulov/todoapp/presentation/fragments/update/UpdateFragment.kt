@@ -86,7 +86,7 @@ class UpdateFragment : Fragment(R.layout.fragment_update) {
 
     private fun setSpinnerOnItemSelected() {
         binding.toDoViews.spinnerPriority.setOnItemSelectedListener { item, position ->
-            val drawable = getGradientDrawable(R.drawable.spinner_shape)
+            val drawable = requireContext().getGradientDrawable(R.drawable.spinner_shape)
             drawable.setStroke(2.dp(requireContext()), colors[position])
             (item as? TextView)?.setTextColor(colors[position])
             binding.toDoViews.spinnerPriority.background = drawable

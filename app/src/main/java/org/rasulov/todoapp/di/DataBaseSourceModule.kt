@@ -17,10 +17,11 @@ import javax.inject.Singleton
 class DataBaseSourceModule {
 
 
+
     @Singleton
     @Provides
-    fun provideDataBaseSource(toDoDao: ToDoDao): DataBaseToDoSource {
-        return RoomToDoSource(toDoDao)
+    fun provideDataBase(@ApplicationContext context: Context): ToDoDatabase {
+        return ToDoDatabase.getDatabase(context)
     }
 
     @Singleton
@@ -31,8 +32,8 @@ class DataBaseSourceModule {
 
     @Singleton
     @Provides
-    fun provideDataBase(@ApplicationContext context: Context): ToDoDatabase {
-        return ToDoDatabase.getDatabase(context)
+    fun provideDataBaseSource(toDoDao: ToDoDao): DataBaseToDoSource {
+        return RoomToDoSource(toDoDao)
     }
 
 }

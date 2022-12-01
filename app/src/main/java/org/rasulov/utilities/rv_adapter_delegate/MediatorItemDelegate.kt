@@ -36,7 +36,7 @@ class MediatorItemDelegate<I : Any> private constructor(
         val inflater = LayoutInflater.from(parent.context)
         val itemDelegate = delegateByViewType[viewType]
         val view = inflater.inflate(itemDelegate.layout, parent, false)
-        return itemDelegate.viewHolderProducer(view)
+        return itemDelegate.itemViewHolderProducer(view)
 
     }
 

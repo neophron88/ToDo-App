@@ -2,13 +2,17 @@
 
 
 buildscript {
+    ext.nav_version = "2.5.1"
+    ext.room_version = "2.4.3"
+    ext.hilt_version = "2.38.1"
+
+
     repositories {
         google()
     }
     dependencies {
-        def nav_version = "2.5.1"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.40.5'
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.44'
 
     }
 }
@@ -20,7 +24,30 @@ plugins {
 }
 
 
-
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+
+    dependencies = [:]
+    dependencies.coreKtx = 'androidx.core:core-ktx:1.8.0'
+    dependencies.recyclerview = 'androidx.recyclerview:recyclerview:1.2.1'
+    dependencies.appcompat = 'androidx.appcompat:appcompat:1.5.1'
+    dependencies.material = 'com.google.android.material:material:1.7.0'
+    dependencies.constraintlayout = 'androidx.constraintlayout:constraintlayout:2.1.4'
+    dependencies.coroutines = 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    dependencies.navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    dependencies.navigationUiKtx = "androidx.navigation:navigation-ui-ktx:$nav_version"
+    dependencies.roomRuntime = "androidx.room:room-runtime:$room_version"
+    dependencies.roomCompiler = "androidx.room:room-compiler:$room_version"
+    dependencies.roomKtx = "androidx.room:room-ktx:$room_version"
+    dependencies.roomKtx = "androidx.room:room-ktx:$room_version"
+    dependencies.fragmentKtx = "androidx.fragment:fragment-ktx:1.5.4"
+    dependencies.livedataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+    dependencies.recyclerviewAnimators = "jp.wasabeef:recyclerview-animators:4.0.2"
+    dependencies.hiltAndroid = "com.google.dagger:hilt-android:$hilt_version"
+    dependencies.hiltCompiler = "com.google.dagger:hilt-compiler:$hilt_version"
+
+
 }

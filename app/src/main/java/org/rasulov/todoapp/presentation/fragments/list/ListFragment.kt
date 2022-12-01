@@ -11,6 +11,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +22,9 @@ import org.rasulov.todoapp.databinding.FragmentListBinding
 import org.rasulov.todoapp.domain.entities.Priority
 import org.rasulov.todoapp.domain.entities.ToDo
 import org.rasulov.todoapp.domain.entities.ToDoSearchBy
-import org.rasulov.todoapp.presentation.fragments.list.adapter.*
+import org.rasulov.todoapp.presentation.fragments.list.viewholders.OnClickListener
+import org.rasulov.todoapp.presentation.fragments.list.viewholders.ToDoHolder
+import org.rasulov.todoapp.presentation.fragments.list.viewholders.asToDoHolder
 import org.rasulov.todoapp.presentation.fragments.update.entities.ToDoParcel
 import org.rasulov.todoapp.presentation.utils.*
 import org.rasulov.utilities.fragment.addMenuProvider
@@ -63,15 +66,10 @@ class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
 
     private fun setupAdapter(): ItemsAdapter {
         val toDoDelegate = ItemDelegate(
-            itemClass = ToDo::class,
             layout = R.layout.todo_item,
             diffUtil = ItemDiffUtil(itemsTheSamePointer = ToDo::id),
-            viewHolderProducer = {
-                ToDoHolder(
-                    it,
-                    requireContext().getColors(R.array.colors),
-                    this
-                )
+            itemViewHolderProducer = {
+                ToDoHolder(it, requireContext().getColors(R.array.colors), this)
             }
         )
 
@@ -84,9 +82,8 @@ class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
     private fun setupRecyclerView(adapter: ItemsAdapter) = with(binding) {
         list.adapter = adapter
         list.itemAnimator = SlideInUpAnimator().apply { addDuration = 300 }
-        list.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        list.setSwipeItem { holder, _ -> viewModel.deleteToDo(holder.asToDoHolder().todo) }
+        list.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        list.setSwipeItem { holder, _ -> viewModel.deleteToDo(holder.asToDoHolder().item) }
 
     }
 
@@ -157,7 +154,7 @@ class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
 
     override fun onItemClick(holder: ToDoHolder) = with(holder) {
         val action =
-            ListFragmentDirections.actionListFragmentToUpdateFragment(ToDoParcel.fromToDo(todo))
+            ListFragmentDirections.actionListFragmentToUpdateFragment(ToDoParcel.fromToDo(item))
         controller.navigate(
             action, FragmentNavigatorExtras(
                 binding.title to "title",

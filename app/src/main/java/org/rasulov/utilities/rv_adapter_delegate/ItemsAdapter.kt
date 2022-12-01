@@ -2,6 +2,7 @@ package org.rasulov.utilities.rv_adapter_delegate
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import org.rasulov.utilities.rv_adapter_delegate.MediatorItemDelegate
 
 
 open class ItemsAdapter(
@@ -27,11 +28,13 @@ open class ItemsAdapter(
 
     override fun onViewRecycled(holder: ItemViewHolder<Any>) {
         holder.unBind()
+
     }
 
     override fun getItemViewType(position: Int): Int {
         return mediator.getItemViewType(getItem(position))
     }
+
 
 }
 
