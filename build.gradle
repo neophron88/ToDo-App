@@ -51,7 +51,7 @@ ext {
     dependencies.junit = 'junit:junit:4.13.2'
     dependencies.androidJunit = 'androidx.test.ext:junit:1.1.5'
     dependencies.espresso = 'androidx.test.espresso:espresso-core:3.5.1'
-    dependencies.mockk = 'io.mockk:mockk:1.13.8'
-    dependencies.coroutinesTest = 'io.mockk:mockk:1.13.8'
-    dependencies.archCoreTesting = 'io.mockk:mockk:1.13.8'
+    dependencies.mockk = 'io.mockk:mockk:1.12.4'
+    dependencies.coroutinesTest = 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1'
+    dependencies.archCoreTesting = 'androidx.arch.core:core-testing:2.1.0'
 }

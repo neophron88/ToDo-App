@@ -17,7 +17,7 @@ class MutableSingleUseData<T : Any> : SingleUseData<T> {
         liveData = MutableLiveData(Handler(value))
     }
 
-    var value: T?
+    override var value: T?
         get() = liveData.value?.getVal()
         set(value) {
             liveData.value = Handler(value)

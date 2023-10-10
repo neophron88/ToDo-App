@@ -14,6 +14,7 @@ import org.rasulov.todoapp.data.sources.database.DataBaseToDoSource
 import org.rasulov.todoapp.data.sources.preference.PreferenceToDoSource
 import org.rasulov.todoapp.domain.ToDoRepository
 import org.rasulov.todoapp.domain.entities.AppSettings
+import org.rasulov.todoapp.domain.entities.Priority
 import org.rasulov.todoapp.domain.entities.ToDo
 import org.rasulov.todoapp.domain.entities.ToDoSearchBy
 import javax.inject.Inject
@@ -29,15 +30,13 @@ class ToDoRepositoryImpl @Inject constructor(
 
     private val findByFlow = combine(
         searchBy.asFlow(),
-        preference.getAppSettings(),
-        ::find
-    )
+        preference.getAppSettings()
+    ) { searchBy, appSettings -> FindBy(searchBy, appSettings) }
 
-    override fun getAllToDos(): Flow<List<ToDo>> {
-        return findByFlow.flatMapLatest {
+    override fun getAllToDos(): Flow<List<ToDo>> =
+        findByFlow.flatMapLatest {
             database.getAllToDos(it)
         }
-    }
 
     override suspend fun addToDo(toDo: ToDo) {
         toDo.validate()
@@ -68,10 +67,5 @@ class ToDoRepositoryImpl @Inject constructor(
     override fun getSettings(): Flow<AppSettings> {
         return preference.getAppSettings()
     }
-
-    private fun find(
-        searchBy: ToDoSearchBy,
-        appSettings: AppSettings
-    ) = FindBy(searchBy, appSettings)
 
 }
