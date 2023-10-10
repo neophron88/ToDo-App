@@ -1,5 +1,5 @@
 
-package org.rasulov.utilities.transition
+package org.rasulov.todoapp.utilities.transition
 
 import androidx.transition.Transition
 

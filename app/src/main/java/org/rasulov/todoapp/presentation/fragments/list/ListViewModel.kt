@@ -12,8 +12,8 @@ import org.rasulov.todoapp.domain.entities.ToDoSearchBy
 import org.rasulov.todoapp.presentation.utils.CanBeRestored
 import org.rasulov.todoapp.presentation.utils.UIEvent
 import org.rasulov.todoapp.presentation.utils.UiState
-import org.rasulov.utilities.lifecycle.observer.MutableSingleUseData
-import org.rasulov.utilities.lifecycle.observer.toSingleUseData
+import org.rasulov.todoapp.utilities.lifecycle.observer.MutableSingleUseData
+import org.rasulov.todoapp.utilities.lifecycle.observer.toSingleUseData
 import javax.inject.Inject
 
 @HiltViewModel

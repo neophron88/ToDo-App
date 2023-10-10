@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package org.rasulov.utilities.lifecycle.observer
+package org.rasulov.todoapp.utilities.lifecycle.observer
 
 
 typealias Observer<T> = (T) -> Unit

@@ -6,7 +6,7 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.rasulov.todoapp.domain.entities.ToDo
 import org.rasulov.todoapp.databinding.TodoItemBinding
-import org.rasulov.utilities.rv_adapter_delegate.ItemViewHolder
+import org.rasulov.todoapp.utilities.rv_adapter_delegate.ItemViewHolder
 
 
 class ToDoHolder(

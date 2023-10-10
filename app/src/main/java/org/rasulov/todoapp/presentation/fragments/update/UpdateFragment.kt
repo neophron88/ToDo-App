@@ -11,16 +11,16 @@ import androidx.navigation.fragment.navArgs
 import androidx.transition.ChangeBounds
 import androidx.transition.Slide
 import dagger.hilt.android.AndroidEntryPoint
-import org.rasulov.utilities.fragment.addMenuProvider
-import org.rasulov.utilities.fragment.disableTransitionOverlap
-import org.rasulov.utilities.fragment.getGradientDrawable
-import org.rasulov.utilities.fragment.viewBindings
+import org.rasulov.todoapp.utilities.fragment.addMenuProvider
+import org.rasulov.todoapp.utilities.fragment.disableTransitionOverlap
+import org.rasulov.todoapp.utilities.fragment.getGradientDrawable
+import org.rasulov.todoapp.utilities.fragment.viewBindings
 import org.rasulov.todoapp.R
 import org.rasulov.todoapp.domain.entities.Priority
 import org.rasulov.todoapp.domain.entities.ToDo
 import org.rasulov.todoapp.presentation.utils.*
 import org.rasulov.todoapp.databinding.FragmentUpdateBinding
-import org.rasulov.utilities.primitives.dp
+import org.rasulov.todoapp.utilities.primitives.dp
 
 @AndroidEntryPoint
 class UpdateFragment : Fragment(R.layout.fragment_update) {

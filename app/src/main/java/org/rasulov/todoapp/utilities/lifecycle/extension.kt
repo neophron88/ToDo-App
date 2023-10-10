@@ -1,4 +1,4 @@
-package org.rasulov.utilities.lifecycle
+package org.rasulov.todoapp.utilities.lifecycle
 
 import android.os.Handler
 import android.os.Looper

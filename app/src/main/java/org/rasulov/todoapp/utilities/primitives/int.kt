@@ -1,4 +1,4 @@
-package org.rasulov.utilities.primitives
+package org.rasulov.todoapp.utilities.primitives
 
 import android.content.Context
 import android.util.TypedValue

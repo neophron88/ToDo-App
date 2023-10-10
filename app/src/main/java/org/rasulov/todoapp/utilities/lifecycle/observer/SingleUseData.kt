@@ -1,4 +1,4 @@
-package org.rasulov.utilities.lifecycle.observer
+package org.rasulov.todoapp.utilities.lifecycle.observer
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData

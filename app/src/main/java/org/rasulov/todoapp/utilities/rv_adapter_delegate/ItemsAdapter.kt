@@ -1,8 +1,8 @@
-package org.rasulov.utilities.rv_adapter_delegate
+package org.rasulov.todoapp.utilities.rv_adapter_delegate
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import org.rasulov.utilities.rv_adapter_delegate.MediatorItemDelegate
+import org.rasulov.todoapp.utilities.rv_adapter_delegate.MediatorItemDelegate
 
 
 open class ItemsAdapter(

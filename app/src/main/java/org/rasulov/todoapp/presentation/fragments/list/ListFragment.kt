@@ -27,14 +27,14 @@ import org.rasulov.todoapp.presentation.fragments.list.viewholders.ToDoHolder
 import org.rasulov.todoapp.presentation.fragments.list.viewholders.asToDoHolder
 import org.rasulov.todoapp.presentation.fragments.update.entities.ToDoParcel
 import org.rasulov.todoapp.presentation.utils.*
-import org.rasulov.utilities.fragment.addMenuProvider
-import org.rasulov.utilities.fragment.repeatWhenViewStarted
-import org.rasulov.utilities.fragment.viewBindings
-import org.rasulov.utilities.lifecycle.postDelayed
-import org.rasulov.utilities.recyclerview.setSwipeItem
-import org.rasulov.utilities.rv_adapter_delegate.ItemDelegate
-import org.rasulov.utilities.rv_adapter_delegate.ItemDiffUtil
-import org.rasulov.utilities.rv_adapter_delegate.ItemsAdapter
+import org.rasulov.todoapp.utilities.fragment.addMenuProvider
+import org.rasulov.todoapp.utilities.fragment.repeatWhenViewStarted
+import org.rasulov.todoapp.utilities.fragment.viewBindings
+import org.rasulov.todoapp.utilities.lifecycle.postDelayed
+import org.rasulov.todoapp.utilities.recyclerview.setSwipeItem
+import org.rasulov.todoapp.utilities.rv_adapter_delegate.ItemDelegate
+import org.rasulov.todoapp.utilities.rv_adapter_delegate.ItemDiffUtil
+import org.rasulov.todoapp.utilities.rv_adapter_delegate.ItemsAdapter
 
 @AndroidEntryPoint
 class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {

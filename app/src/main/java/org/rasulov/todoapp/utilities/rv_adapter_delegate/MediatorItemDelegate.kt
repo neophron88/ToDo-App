@@ -1,4 +1,4 @@
-package org.rasulov.utilities.rv_adapter_delegate
+package org.rasulov.todoapp.utilities.rv_adapter_delegate
 
 import android.util.SparseArray
 import android.view.LayoutInflater

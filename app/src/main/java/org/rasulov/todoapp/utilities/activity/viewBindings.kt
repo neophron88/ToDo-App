@@ -1,4 +1,4 @@
-package org.rasulov.utilities.activity
+package org.rasulov.todoapp.utilities.activity
 
 import android.view.LayoutInflater
 import androidx.activity.ComponentActivity

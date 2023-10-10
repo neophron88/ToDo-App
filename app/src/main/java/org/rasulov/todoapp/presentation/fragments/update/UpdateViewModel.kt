@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import org.rasulov.utilities.lifecycle.observer.MutableSingleUseData
-import org.rasulov.utilities.lifecycle.observer.toSingleUseData
+import org.rasulov.todoapp.utilities.lifecycle.observer.MutableSingleUseData
+import org.rasulov.todoapp.utilities.lifecycle.observer.toSingleUseData
 import org.rasulov.todoapp.domain.EmptyFieldException
 import org.rasulov.todoapp.domain.ToDoRepository
 import org.rasulov.todoapp.domain.entities.ToDo

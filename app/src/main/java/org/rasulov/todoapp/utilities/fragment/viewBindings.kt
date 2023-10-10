@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST", "unused")
 
-package org.rasulov.utilities.fragment
+package org.rasulov.todoapp.utilities.fragment
 
 import android.view.View
 import androidx.fragment.app.Fragment

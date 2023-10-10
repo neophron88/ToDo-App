@@ -36,11 +36,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
 
     buildFeatures {
@@ -71,7 +71,10 @@ dependencies {
     kapt rootProject.ext.dependencies.hiltCompiler
 
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    testImplementation rootProject.ext.dependencies.junit
+    testImplementation rootProject.ext.dependencies.mockk
+    testImplementation rootProject.ext.dependencies.coroutinesTest
+    testImplementation rootProject.ext.dependencies.archCoreTesting
+    androidTestImplementation rootProject.ext.dependencies.androidJunit
+    androidTestImplementation rootProject.ext.dependencies.espresso
 }

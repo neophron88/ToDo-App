@@ -1,4 +1,4 @@
-package org.rasulov.utilities.recyclerview
+package org.rasulov.todoapp.utilities.recyclerview
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView

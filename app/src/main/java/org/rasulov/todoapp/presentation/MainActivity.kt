@@ -7,7 +7,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.rasulov.todoapp.R
 import org.rasulov.todoapp.databinding.ActivityMainBinding
 import org.rasulov.todoapp.presentation.utils.navControllers
-import org.rasulov.utilities.activity.viewBindings
+import org.rasulov.todoapp.utilities.activity.viewBindings
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -21,5 +21,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setupActionBarWithNavController(navController)
+
     }
 }

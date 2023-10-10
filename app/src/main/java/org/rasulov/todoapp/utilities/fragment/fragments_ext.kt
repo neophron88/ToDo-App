@@ -1,4 +1,4 @@
-package org.rasulov.utilities.fragment
+package org.rasulov.todoapp.utilities.fragment
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
