@@ -1,11 +1,12 @@
 package org.rasulov.todoapp.data.sources.preference
 
-import kotlinx.coroutines.flow.Flow
+import io.reactivex.Completable
+import io.reactivex.Flowable
 import org.rasulov.todoapp.domain.entities.AppSettings
 
 interface PreferenceToDoSource {
 
-    suspend fun setAppSettings(appSettings: AppSettings)
+    fun setAppSettings(appSettings: AppSettings): Completable
 
-    fun getAppSettings(): Flow<AppSettings>
+    fun getAppSettings(): Flowable<AppSettings>
 }

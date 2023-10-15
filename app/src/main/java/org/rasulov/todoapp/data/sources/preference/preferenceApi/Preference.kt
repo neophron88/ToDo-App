@@ -1,13 +1,14 @@
 package org.rasulov.todoapp.data.sources.preference.preferenceApi
 
-import kotlinx.coroutines.flow.Flow
+import io.reactivex.Completable
+import io.reactivex.Flowable
 
 interface Preference {
 
-    fun getSettings(): Flow<Map<String, *>>
+    fun getSettings(): Flowable<Map<String, *>>
 
-    suspend fun setSetting(setting: Setting)
+    fun setSetting(setting: Setting): Completable
 
-    suspend fun setSettings(settings: List<Setting>)
+    fun setSettings(settings: List<Setting>): Completable
 }
 

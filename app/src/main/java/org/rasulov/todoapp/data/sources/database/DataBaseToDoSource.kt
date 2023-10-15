@@ -1,19 +1,20 @@
 package org.rasulov.todoapp.data.sources.database
 
-import kotlinx.coroutines.flow.Flow
+import io.reactivex.Completable
+import io.reactivex.Flowable
 import org.rasulov.todoapp.data.repository.entity.FindBy
 import org.rasulov.todoapp.domain.entities.ToDo
 
 interface DataBaseToDoSource {
 
-    fun getAllToDos(findBy: FindBy): Flow<List<ToDo>>
+    fun getAllToDos(findBy: FindBy): Flowable<List<ToDo>>
 
-    suspend fun insertToDo(task: ToDo)
+    fun insertToDo(task: ToDo): Completable
 
-    suspend fun updateToDo(task: ToDo)
+    fun updateToDo(task: ToDo): Completable
 
-    suspend fun deleteToDo(toDoId: Long)
+    fun deleteToDo(toDoId: Long): Completable
 
-    suspend fun deleteAllToDos()
+    fun deleteAllToDos(): Completable
 
 }

@@ -1,43 +1,40 @@
 package org.rasulov.todoapp.data.sources.preference.preferenceApi
 
 import android.content.SharedPreferences
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.withContext
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Completable
+import io.reactivex.Flowable
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 
 
 class PreferenceImpl(private val preferences: SharedPreferences) : Preference {
 
-    private val settingsFlow = MutableSharedFlow<Unit>(
-        1,
-        0,
-        BufferOverflow.DROP_OLDEST
-    ).also { it.tryEmit(Unit) }
+    private val settingsFlow = BehaviorSubject.createDefault(Unit)
 
 
-    override fun getSettings(): Flow<Map<String, *>> {
+    override fun getSettings(): Flowable<Map<String, *>> {
         return settingsFlow
             .map { preferences.all }
-            .flowOn(Dispatchers.IO)
+            .subscribeOn(Schedulers.io())
+            .toFlowable(BackpressureStrategy.LATEST)
     }
 
 
-    override suspend fun setSetting(setting: Setting) {
-        withContext(Dispatchers.IO) {
+    override fun setSetting(setting: Setting): Completable =
+        Completable.fromAction {
             setting.setup(preferences.edit()).commit()
-            settingsFlow.emit(Unit)
-        }
-    }
+            settingsFlow.onNext(Unit)
+        }.observeOn(Schedulers.io())
 
 
-    override suspend fun setSettings(settings: List<Setting>) {
-        withContext(Dispatchers.IO) {
+    override fun setSettings(settings: List<Setting>): Completable =
+        Completable.fromAction {
             val editor = preferences.edit()
             settings.forEach { it.setup(editor) }
             editor.commit()
-            settingsFlow.emit(Unit)
-        }
-    }
+            settingsFlow.onNext(Unit)
+        }.observeOn(Schedulers.io())
+
 }
 

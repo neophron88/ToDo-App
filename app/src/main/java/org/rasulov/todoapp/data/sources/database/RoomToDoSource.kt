@@ -1,7 +1,8 @@
 package org.rasulov.todoapp.data.sources.database
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import io.reactivex.Completable
+import io.reactivex.Flowable
+import io.reactivex.schedulers.Schedulers
 import org.rasulov.todoapp.data.repository.entity.FindBy
 import org.rasulov.todoapp.data.sources.database.room.ToDoDao
 import org.rasulov.todoapp.data.sources.database.room.entities.ToDoDBEntity
@@ -12,7 +13,7 @@ class RoomToDoSource(
     private val toDoDao: ToDoDao
 ) : DataBaseToDoSource {
 
-    override fun getAllToDos(findBy: FindBy): Flow<List<ToDo>> {
+    override fun getAllToDos(findBy: FindBy): Flowable<List<ToDo>> {
         val searchBy = findBy.searchBy
         val settings = findBy.appSettings
         return toDoDao
@@ -20,19 +21,23 @@ class RoomToDoSource(
             .map { it.map(ToDoDBEntity::toToDo) }
     }
 
-    override suspend fun insertToDo(task: ToDo) {
+    override fun insertToDo(task: ToDo): Completable =
         toDoDao.insertTask(ToDoDBEntity.fromToDo(task))
-    }
+            .subscribeOn(Schedulers.io())
 
-    override suspend fun updateToDo(task: ToDo) {
+
+    override fun updateToDo(task: ToDo): Completable =
         toDoDao.updateTask(ToDoDBEntity.fromToDo(task))
-    }
+            .subscribeOn(Schedulers.io())
 
-    override suspend fun deleteToDo(toDoId: Long) {
+
+    override fun deleteToDo(toDoId: Long): Completable =
         toDoDao.deleteTask(ToDoIDTuple(toDoId))
-    }
+            .subscribeOn(Schedulers.io())
 
-    override suspend fun deleteAllToDos() {
+
+    override fun deleteAllToDos(): Completable =
         toDoDao.deleteAll()
-    }
+            .subscribeOn(Schedulers.io())
+
 }

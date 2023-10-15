@@ -1,5 +1,7 @@
 package org.rasulov.todoapp.domain
 
+import io.reactivex.Completable
+import io.reactivex.Flowable
 import kotlinx.coroutines.flow.Flow
 import org.rasulov.todoapp.domain.entities.AppSettings
 import org.rasulov.todoapp.domain.entities.ToDo
@@ -7,19 +9,19 @@ import org.rasulov.todoapp.domain.entities.ToDoSearchBy
 
 interface ToDoRepository {
 
-    fun getAllToDos(): Flow<List<ToDo>>
+    fun getAllToDos(): Flowable<List<ToDo>>
 
-    suspend fun addToDo(toDo: ToDo)
+    fun addToDo(toDo: ToDo): Completable
 
-    suspend fun updateToDo(toDo: ToDo)
+    fun updateToDo(toDo: ToDo): Completable
 
-    suspend fun deleteToDo(toDoId: Long)
+    fun deleteToDo(toDoId: Long): Completable
 
     fun setSearchBy(searchBy: ToDoSearchBy)
 
-    suspend fun setSettings(appSettings: AppSettings)
+    fun setSettings(appSettings: AppSettings): Completable
 
-    fun getSettings(): Flow<AppSettings>
+    fun getSettings(): Flowable<AppSettings>
 
-    suspend fun deleteAllToDos()
+    fun deleteAllToDos(): Completable
 }

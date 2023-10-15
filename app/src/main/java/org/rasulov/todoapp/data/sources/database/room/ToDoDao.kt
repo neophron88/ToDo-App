@@ -1,7 +1,8 @@
 package org.rasulov.todoapp.data.sources.database.room
 
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
+import io.reactivex.Completable
+import io.reactivex.Flowable
 import org.rasulov.todoapp.data.sources.database.room.entities.ToDoDBEntity
 import org.rasulov.todoapp.data.sources.database.room.entities.ToDoIDTuple
 
@@ -17,19 +18,19 @@ interface ToDoDao {
                 "CASE WHEN :priority = 1 THEN priority END ASC, " +
                 "CASE WHEN :priority = 3 THEN priority END DESC"
     )
-    fun getAllTasks(searchBy: String, priority: Int): Flow<List<ToDoDBEntity>>
+    fun getAllTasks(searchBy: String, priority: Int): Flowable<List<ToDoDBEntity>>
 
 
     @Insert
-    suspend fun insertTask(task: ToDoDBEntity)
+    fun insertTask(task: ToDoDBEntity): Completable
 
     @Delete(entity = ToDoDBEntity::class)
-    suspend fun deleteTask(task: ToDoIDTuple)
+    fun deleteTask(task: ToDoIDTuple): Completable
 
     @Update
-    suspend fun updateTask(task: ToDoDBEntity)
+    fun updateTask(task: ToDoDBEntity): Completable
 
     @Query("DELETE FROM todo_table")
-    suspend fun deleteAll()
+    fun deleteAll(): Completable
 
 }

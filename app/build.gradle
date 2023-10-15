@@ -63,6 +63,7 @@ dependencies {
 
     implementation rootProject.ext.dependencies.roomRuntime
     implementation rootProject.ext.dependencies.roomKtx
+    implementation rootProject.ext.dependencies.roomRxJava
     kapt rootProject.ext.dependencies.roomCompiler
 
     implementation rootProject.ext.dependencies.fragmentKtx

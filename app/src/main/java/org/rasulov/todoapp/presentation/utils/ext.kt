@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import org.rasulov.todoapp.domain.entities.Priority
 import org.rasulov.todoapp.domain.entities.AppSettings
+import org.rasulov.todoapp.domain.entities.Priority
 import org.rasulov.todoapp.presentation.fragments.list.ListViewModel
 
 typealias SelectedListener = (view: View?, position: Int) -> Unit
@@ -72,4 +72,7 @@ fun Fragment.showLongToast(text: String) {
         Toast.LENGTH_LONG
     ).show()
 }
+
+
+
 

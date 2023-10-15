@@ -3,18 +3,15 @@
 
 package org.rasulov.todoapp.data.repository
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asFlow
+import io.reactivex.Completable
+import io.reactivex.Flowable
+import io.reactivex.processors.BehaviorProcessor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
 import org.rasulov.todoapp.data.repository.entity.FindBy
 import org.rasulov.todoapp.data.sources.database.DataBaseToDoSource
 import org.rasulov.todoapp.data.sources.preference.PreferenceToDoSource
 import org.rasulov.todoapp.domain.ToDoRepository
 import org.rasulov.todoapp.domain.entities.AppSettings
-import org.rasulov.todoapp.domain.entities.Priority
 import org.rasulov.todoapp.domain.entities.ToDo
 import org.rasulov.todoapp.domain.entities.ToDoSearchBy
 import javax.inject.Inject
@@ -26,46 +23,45 @@ class ToDoRepositoryImpl @Inject constructor(
     private val preference: PreferenceToDoSource
 ) : ToDoRepository {
 
-    private val searchBy = MutableLiveData(ToDoSearchBy())
+    private val searchBy = BehaviorProcessor.createDefault(ToDoSearchBy())
 
-    private val findByFlow = combine(
-        searchBy.asFlow(),
-        preference.getAppSettings()
+    private val findByFlow = Flowable.combineLatest(
+        searchBy, preference.getAppSettings()
     ) { searchBy, appSettings -> FindBy(searchBy, appSettings) }
 
-    override fun getAllToDos(): Flow<List<ToDo>> =
-        findByFlow.flatMapLatest {
+    override fun getAllToDos(): Flowable<List<ToDo>> =
+        findByFlow.switchMap {
             database.getAllToDos(it)
         }
 
-    override suspend fun addToDo(toDo: ToDo) {
-        toDo.validate()
-        database.insertToDo(toDo)
-    }
+    override fun addToDo(toDo: ToDo): Completable =
+        Completable
+            .fromAction { toDo.validate() }
+            .andThen(database.insertToDo(toDo))
 
-    override suspend fun updateToDo(toDo: ToDo) {
-        toDo.validate()
-        database.updateToDo(toDo)
-    }
+    override fun updateToDo(toDo: ToDo): Completable =
+        Completable
+            .fromAction { toDo.validate() }
+            .andThen(database.updateToDo(toDo))
 
-    override suspend fun deleteToDo(toDoId: Long) {
+    override fun deleteToDo(toDoId: Long): Completable =
         database.deleteToDo(toDoId)
-    }
 
-    override suspend fun deleteAllToDos() {
+
+    override fun deleteAllToDos(): Completable =
         database.deleteAllToDos()
-    }
+
 
     override fun setSearchBy(searchBy: ToDoSearchBy) {
-        this.searchBy.value = searchBy
+        this.searchBy.onNext(searchBy)
     }
 
-    override suspend fun setSettings(appSettings: AppSettings) {
+    override fun setSettings(appSettings: AppSettings): Completable =
         preference.setAppSettings(appSettings)
-    }
 
-    override fun getSettings(): Flow<AppSettings> {
-        return preference.getAppSettings()
-    }
+
+    override fun getSettings(): Flowable<AppSettings> =
+        preference.getAppSettings()
+
 
 }

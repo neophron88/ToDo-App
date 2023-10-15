@@ -16,7 +16,6 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
-import kotlinx.coroutines.flow.collectLatest
 import org.rasulov.todoapp.R
 import org.rasulov.todoapp.databinding.FragmentListBinding
 import org.rasulov.todoapp.domain.entities.Priority
@@ -26,9 +25,12 @@ import org.rasulov.todoapp.presentation.fragments.list.viewholders.OnClickListen
 import org.rasulov.todoapp.presentation.fragments.list.viewholders.ToDoHolder
 import org.rasulov.todoapp.presentation.fragments.list.viewholders.asToDoHolder
 import org.rasulov.todoapp.presentation.fragments.update.entities.ToDoParcel
-import org.rasulov.todoapp.presentation.utils.*
+import org.rasulov.todoapp.presentation.utils.CanBeRestored
+import org.rasulov.todoapp.presentation.utils.UiState
+import org.rasulov.todoapp.presentation.utils.getColors
+import org.rasulov.todoapp.presentation.utils.setOnQueryListener
+import org.rasulov.todoapp.presentation.utils.setPriority
 import org.rasulov.todoapp.utilities.fragment.addMenuProvider
-import org.rasulov.todoapp.utilities.fragment.repeatWhenViewStarted
 import org.rasulov.todoapp.utilities.fragment.viewBindings
 import org.rasulov.todoapp.utilities.lifecycle.postDelayed
 import org.rasulov.todoapp.utilities.recyclerview.setSwipeItem
@@ -122,12 +124,11 @@ class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
     }
 
 
-    private fun observeUiState(adapter: ItemsAdapter) = repeatWhenViewStarted {
-        viewModel.uiState.collectLatest {
+    private fun observeUiState(adapter: ItemsAdapter) =
+        viewModel.uiState.observe(viewLifecycleOwner) {
             adapter.submitList(it.data)
             renderResult(it)
         }
-    }
 
     private fun renderResult(state: UiState<ToDo>) = with(binding) {
         list.isVisible = state.isNotEmptyData
