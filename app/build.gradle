@@ -56,7 +56,8 @@ dependencies {
     implementation rootProject.ext.dependencies.recyclerview
     implementation rootProject.ext.dependencies.material
     implementation rootProject.ext.dependencies.constraintlayout
-    implementation rootProject.ext.dependencies.coroutines
+    implementation rootProject.ext.dependencies.rxjava
+    implementation rootProject.ext.dependencies.rxandroid
     implementation rootProject.ext.dependencies.navigationFragmentKtx
     implementation rootProject.ext.dependencies.navigationUiKtx
 

@@ -37,6 +37,8 @@ ext {
     dependencies.material = 'com.google.android.material:material:1.7.0'
     dependencies.constraintlayout = 'androidx.constraintlayout:constraintlayout:2.1.4'
     dependencies.coroutines = 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    dependencies.rxjava = 'io.reactivex.rxjava2:rxjava:2.2.21'
+    dependencies.rxandroid = 'io.reactivex.rxjava2:rxandroid:2.1.1'
     dependencies.navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:$nav_version"
     dependencies.navigationUiKtx = "androidx.navigation:navigation-ui-ktx:$nav_version"
     dependencies.roomRuntime = "androidx.room:room-runtime:$room_version"
