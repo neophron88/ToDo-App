@@ -1,11 +1,13 @@
-package org.rasulov.todoapp.utilities.rv_adapter_delegate
+package org.rasulov.todoapp.utilities.recyclerview.adapterdelegate
 
+import android.util.Log
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import kotlin.reflect.KClass
 
+@Suppress("UNCHECKED_CAST")
 class MediatorItemDelegate<I : Any> private constructor(
     delegates: List<ItemDelegate<out I>>
 ) {
@@ -17,27 +19,23 @@ class MediatorItemDelegate<I : Any> private constructor(
 
     init {
         val castedDelegates = delegates as List<ItemDelegate<I>>
-        configureViewType(castedDelegates)
+        decomposeDelegates(castedDelegates)
     }
 
-    private fun configureViewType(
-        delegates: List<ItemDelegate<I>>
-    ) = delegates.forEach { itemDelegate ->
+    private fun decomposeDelegates(delegates: List<ItemDelegate<I>>) =
+        delegates.forEach { itemDelegate ->
+            delegateByViewType.put(itemDelegate.layout, itemDelegate)
+            val itemClass = itemDelegate.itemClass
+            viewTypeByClass[itemClass] = itemDelegate.layout
+            delegateByClass[itemClass] = itemDelegate
 
-        delegateByViewType.put(itemDelegate.layout, itemDelegate)
-
-        val kClass = itemDelegate.itemClass
-        viewTypeByClass[kClass] = itemDelegate.layout
-        delegateByClass[kClass] = itemDelegate
-
-    }
+        }
 
     fun createViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder<I> {
         val inflater = LayoutInflater.from(parent.context)
         val itemDelegate = delegateByViewType[viewType]
         val view = inflater.inflate(itemDelegate.layout, parent, false)
-        return itemDelegate.itemViewHolderProducer(view)
-
+        return itemDelegate.itemViewHolder(view)
     }
 
     fun getItemViewType(item: I): Int {
@@ -64,7 +62,7 @@ class MediatorItemDelegate<I : Any> private constructor(
 
         override fun getChangePayload(oldItem: I, newItem: I): Any? {
             val oldClass = oldItem::class
-            if (oldClass != newItem::class) return false
+            if (oldClass != newItem::class) return null
             val diffUtil = delegateByClass[oldClass]?.diffUtil ?: throw error(oldClass)
             return diffUtil.getChangePayload(oldItem, newItem)
         }

@@ -1,5 +1,6 @@
 package org.rasulov.todoapp.presentation.fragments.list
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -7,11 +8,9 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,31 +18,34 @@ import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import kotlinx.coroutines.flow.collectLatest
 import org.rasulov.todoapp.R
 import org.rasulov.todoapp.databinding.FragmentListBinding
+import org.rasulov.todoapp.databinding.TodoItemBinding
 import org.rasulov.todoapp.domain.entities.Priority
 import org.rasulov.todoapp.domain.entities.ToDo
 import org.rasulov.todoapp.domain.entities.ToDoSearchBy
-import org.rasulov.todoapp.presentation.fragments.list.viewholders.OnClickListener
-import org.rasulov.todoapp.presentation.fragments.list.viewholders.ToDoHolder
-import org.rasulov.todoapp.presentation.fragments.list.viewholders.asToDoHolder
 import org.rasulov.todoapp.presentation.fragments.update.entities.ToDoParcel
-import org.rasulov.todoapp.presentation.utils.*
+import org.rasulov.todoapp.presentation.utils.CanBeRestored
+import org.rasulov.todoapp.presentation.utils.UiState
+import org.rasulov.todoapp.presentation.utils.getColors
+import org.rasulov.todoapp.presentation.utils.setOnQueryListener
+import org.rasulov.todoapp.presentation.utils.setPriority
 import org.rasulov.todoapp.utilities.fragment.addMenuProvider
 import org.rasulov.todoapp.utilities.fragment.repeatWhenViewStarted
 import org.rasulov.todoapp.utilities.fragment.viewBindings
 import org.rasulov.todoapp.utilities.lifecycle.postDelayed
+import org.rasulov.todoapp.utilities.recyclerview.adapterdelegate.ItemViewHolder
+import org.rasulov.todoapp.utilities.recyclerview.adapterdelegate.ItemsAdapter
 import org.rasulov.todoapp.utilities.recyclerview.setSwipeItem
-import org.rasulov.todoapp.utilities.rv_adapter_delegate.ItemDelegate
-import org.rasulov.todoapp.utilities.rv_adapter_delegate.ItemDiffUtil
-import org.rasulov.todoapp.utilities.rv_adapter_delegate.ItemsAdapter
 
 @AndroidEntryPoint
-class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
+class ListFragment : Fragment(R.layout.fragment_list) {
 
     private val viewModel: ListViewModel by viewModels()
 
     private val binding: FragmentListBinding by viewBindings()
 
     private val controller by lazy { findNavController() }
+
+    private val colors by lazy { requireContext().getColors(R.array.colors) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,32 +61,43 @@ class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
         viewLifecycleOwner.postDelayed(500) {
             observeUiState(adapter)
         }
-
         observeUiEvent()
 
     }
 
-    private fun setupAdapter(): ItemsAdapter {
-        val toDoDelegate = ItemDelegate(
-            layout = R.layout.todo_item,
-            diffUtil = ItemDiffUtil(itemsTheSamePointer = ToDo::id),
-            itemViewHolderProducer = {
-                ToDoHolder(it, requireContext().getColors(R.array.colors), this)
-            }
-        )
+    private fun setupAdapter() = ItemsAdapter {
 
-        val adapter = ItemsAdapter(toDoDelegate).also {
-            it.stateRestorationPolicy = PREVENT_WHEN_EMPTY
+        item<ToDo, TodoItemBinding> {
+            layout { R.layout.todo_item }
+            diffutil {
+                areItemsTheSame { oldItem, newItem -> oldItem.id == newItem.id }
+                areContentsTheSame { oldItem, newItem -> oldItem == newItem }
+            }
+            viewholder {
+                viewbinding(TodoItemBinding::bind)
+                viewbindingCreated {
+                    binding.root.setOnClickListener { onItemClick(item, binding) }
+                }
+                onbind {
+                    binding.title.text = item.title
+                    val color = colors[item.priority.ordinal - 1]
+                    binding.priorityIndicator.backgroundTintList = ColorStateList.valueOf(color)
+                    binding.description.text = item.description
+                }
+            }
         }
-        return adapter
-    }
+
+    }.also { it.stateRestorationPolicy = PREVENT_WHEN_EMPTY }
 
     private fun setupRecyclerView(adapter: ItemsAdapter) = with(binding) {
         list.adapter = adapter
         list.itemAnimator = SlideInUpAnimator().apply { addDuration = 300 }
-        list.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
-        list.setSwipeItem { holder, _ -> viewModel.deleteToDo(holder.asToDoHolder().item) }
-
+        list.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        list.setSwipeItem { holder, _ ->
+            val itemHolder = holder as ItemViewHolder<ToDo>
+            viewModel.deleteToDo(itemHolder.item)
+        }
     }
 
     private fun setupFloatingAction() =
@@ -152,16 +165,10 @@ class ListFragment : Fragment(R.layout.fragment_list), OnClickListener {
     }
 
 
-    override fun onItemClick(holder: ToDoHolder) = with(holder) {
+    private fun onItemClick(item: ToDo, binding: TodoItemBinding) {
         val action =
             ListFragmentDirections.actionListFragmentToUpdateFragment(ToDoParcel.fromToDo(item))
-        controller.navigate(
-            action, FragmentNavigatorExtras(
-                binding.title to "title",
-                binding.description to "description",
-                binding.priorityIndicator to "priority"
-            )
-        )
+        controller.navigate(action)
     }
 
 }

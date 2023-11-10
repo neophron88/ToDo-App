@@ -1,4 +1,4 @@
-package org.rasulov.todoapp.utilities.rv_adapter_delegate
+package org.rasulov.todoapp.utilities.recyclerview.adapterdelegate
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
