@@ -26,6 +26,10 @@ class ListViewModel @Inject constructor(
         .map { UiState(data = it) }
         .stateInLazily(UiState(isLoading = true))
 
+//    val uiState: Flow<UiState<ToDo>> = toDoRepository.getAllToDos()
+//        .map { UiState(data = it) }
+//        .stateInLazily(UiState(isLoading = true))
+
 
     private val _uiEvent = MutableSingleUseData<UIEvent>()
     val uiEvent = _uiEvent.toSingleUseData()
