@@ -100,6 +100,21 @@ class ListFragment : Fragment(R.layout.fragment_list) {
         }
     }
 
+    private fun setup1FloatingAction() =
+        binding.floatingActionButton.setOnClickListener {
+            controller.navigate(R.id.action_listFragment_to_addFragment)
+        }
+
+    private fun setup2FloatingAction() =
+        binding.floatingActionButton.setOnClickListener {
+            controller.navigate(R.id.action_listFragment_to_addFragment)
+        }
+
+    private fun setup3FloatingAction() =
+        binding.floatingActionButton.setOnClickListener {
+            controller.navigate(R.id.action_listFragment_to_addFragment)
+        }
+
     private fun setupFloatingAction() =
         binding.floatingActionButton.setOnClickListener {
             controller.navigate(R.id.action_listFragment_to_addFragment)
