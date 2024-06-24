@@ -65,6 +65,24 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
     }
 
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+//        val adapter = setupAdapter()
+//
+//        setupRecyclerView(adapter)
+//
+//        setupFloatingAction()
+//
+//        addMenuProvider()
+//
+//        viewLifecycleOwner.postDelayed(500) {
+//            observeUiState(adapter)
+//        }
+//        observeUiEvent()
+//
+//    }
+
     private fun setupAdapter() = ItemsAdapter {
 
         item<ToDo, TodoItemBinding> {
